@@ -1,4 +1,5 @@
 import os
+import platform
 
 opts = Variables('scache.conf')
 
@@ -18,24 +19,24 @@ warnflags += " -Wstrict-aliasing -Wstrict-aliasing=2 -Wswitch "
 warnflags += " -Wsystem-headers -Wtrigraphs "
 
 opts.AddVariables(
-    ('CC', 'Set the C compiler to use'),
-    ('AS', 'Set the NASM executable name'),
-    ('LINK', 'Set the linker to use'),
-    ('CFLAGS', 'Set the C compiler flags', warnflags+" -nostdlib -ffreestanding -Isrc -I. -std=c99"),
-    ('ASFLAGS', 'Set the assembler flags', warnflags+' -nostdlib -ffreestanding -Isrc -I.'),
-    ('LINKFLAGS', 'Set the linker flags', '-nostartfiles -nodefaultlibs -nostdlib'),
+    ('CC', 'Set the C compiler name'),
+    ('AS', 'Set the assembler name'),
+    ('LINK', 'Set the linker name'),
+    ('CFLAGS', 'Set the C compiler flags', warnflags+' -nostdlib -ffreestanding -Isrc/include -std=c99'),
+    ('ASFLAGS', 'Set the assembler flags', warnflags+' -nostdlib -ffreestanding -Isrc/include'),
+    ('LINKFLAGS', 'Set the linker flags', '-nostdlib'),
+    EnumVariable('optimization', 'Set optimization level. 0 1 2 or 3', '1', allowed_values=('0','1','2','3')),
     ('BUILDDIR', 'Set the sub-directory to put object files in', 'build'),
     BoolVariable('VERBOSE', 'Show full commands during the build process', False),
+    ('arch', 'Set the target architecture', 'i386'),
 )
 
 env = Environment(options = opts, ENV = os.environ)
 Help(opts.GenerateHelpText(env))
 opts.Save('scache.conf', env)
 
-if env['VERBOSE'] != '1':
-  env['CCCOMSTR'] = "Compiling $TARGET from $SOURCES"
-  env['LINKCOMSTR'] = "Linking $TARGET from $SOURCES"
+env.Append(CFLAGS = ' -O' + env['optimization'])
 
 SConscript('SConscript', exports='env', variant_dir = env['BUILDDIR'] , duplicate = 0 )
 
-Clean('.', Glob("*~") + Glob('*/*~') + [ env['BUILDDIR'] ] )
+Clean('.', [ env['BUILDDIR'] ] )

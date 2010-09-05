@@ -1,0 +1,11 @@
+import os.path
+Import(['env'])
+
+files = Glob('*.c')
+subdirs = []
+
+#env.kernel_objects += [env.Object(i) for i in files]
+
+env.kernel_objects += env.StaticLibrary('razor_kern', files)
+
+SConscript([os.path.join(i, 'SConscript') for i in subdirs], exports = ['env'])

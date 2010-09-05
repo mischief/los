@@ -1,0 +1,8 @@
+import os.path
+Import(['env'])
+
+files = Glob('*.c')
+
+razor_c = env.StaticLibrary('razor_c', files)
+
+env.kernel_objects += razor_c

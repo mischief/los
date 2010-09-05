@@ -1,9 +1,9 @@
 import os.path
 Import(['env'])
 
-files = ['multiboot.S'] + Glob('*.c')
+subdirs = ['crt', 'kern', 'libc']
+
+files = []
 
 env.kernel_objects += [env.Object(i) for i in files]
-
-#kernel = env.Program('#/' + target, ['multiboot.S'] + Glob('*.c'))
-
+SConscript([os.path.join(i, 'SConscript') for i in subdirs], exports = ['env'])
