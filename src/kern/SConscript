@@ -1,11 +1,15 @@
 import os.path
 Import(['env'])
 
-files = Glob('*.c')
+files = Glob('*.c') + Glob('*.cc')
 subdirs = []
 
-#env.kernel_objects += [env.Object(i) for i in files]
-
-env.kernel_objects += env.StaticLibrary('razor_kern', files)
+env.kern_objects = []
 
 SConscript([os.path.join(i, 'SConscript') for i in subdirs], exports = ['env'])
+
+env.razor_kern = env.StaticLibrary('razor_kern', files)
+
+#env.Command('#lib/${SOURCE}', razor_kern, Copy("$TARGET", "$SOURCE"))
+
+#env.razor_objects += razor_kern

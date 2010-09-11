@@ -1,7 +1,10 @@
 #ifndef STRING_H
 #define STRING_H
 
+#include <compiler.h>
 #include <stdlib.h>
+
+BEGIN_DECLS
 
 /* copies n bytes between two memory areas, which must not overlap */
 void *memcpy(void *dest, const void *src, size_t n);
@@ -21,5 +24,7 @@ void *memset(void *s, int c, size_t n);
 /* openbsd str functions, yes plz */
 size_t strlcat(char *dest, const char *src, size_t n);
 size_t strlcpy(char *dest, const char *src, size_t n);
+
+END_DECLS
 
 #endif

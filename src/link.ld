@@ -1,29 +1,47 @@
 ENTRY(_start)
 SECTIONS
 {
-    .text 0x100000 :
+    . = 0x100000;
+    .text ALIGN(4096) :
+    {
+        *(.text)
+        *(.gnu.linkonce.t*)
+    }
+    
+    .rodata ALIGN(4096) :
     {
         *(.rodata*)
-        *(.rdata*)
-        code = .; _code = .;
-        *(.text)
-        . = ALIGN(4096);
+        *(.gnu.linkonce.r*)
     }
 
-    .data :
+    .data ALIGN(4096) :
     {
-        data = .; _data = .;
+      start_ctors = .;
+      *(.ctor*)
+      end_ctors = .;
+      
+      start_dtors = .;
+      *(.dtor*)
+      end_dtors = .;
+    
+      /*  data = .; _data = .; */
         *(.data)
-        *(.rodata)
-        . = ALIGN(4096);
+        *(.gnu.linkonce.d*)
     }
 
-    .bss :
+    .bss ALIGN(4096) :
     {
-        bss = .; _bss = .;
+        *(.COMMON*)
+       /* bss = .; _bss = .; */
         *(.bss)
-        . = ALIGN(4096);
+        *(.gnu.linkonce.b*)
     }
 
     end = .; _end = .;
+    
+    /DISCARD/ :
+    {
+        *(.comment)
+      /**(.eh_frame) /* You should discard this unless you're implementing runtime support for C++ exceptions. */
+    }
 }

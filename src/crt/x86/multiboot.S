@@ -1,5 +1,7 @@
-#define ASM_FILE
+#ifndef __asm__
+#define __asm__ 1
 #include <multiboot.h>
+#endif
 
 #define STACK_SIZE 0x4000
 
@@ -27,12 +29,47 @@ multiboot_entry:
   
   push  %eax                        /* magic number */
   push  %ebx                        /* data structure */
+  
+  /* call ctors */
+  mov $start_ctors, %ebx
+  jmp 2f
+  
+1:
+  call *(%ebx)
+  add $4, %ebx
+2:
+  cmp $end_ctors, %ebx
+  jb 1b
+  
+  /* call kernel entrypoint */  
+  call  multiboot_main
+  
+  /* call dtors */
+  mov $start_dtors, %ebx
+  jmp 4f
+3:
+  call *(%ebx)
+  add $4, %ebx
+4:
+  cmp $end_dtors, %ebx
+  jb 3b
 
-  call  kmain
-
+  /* stop */
   cli
 hang:
   hlt
   jmp   hang
 
   .comm stack, STACK_SIZE, 32
+
+/*
+  .section .ctors, "aw", @progbits
+  .align 4
+__CTOR_LIST__:
+  //.long -1
+  
+  .section .dtors, "aw", @progbits
+  .align 4
+__DTOR_LIST__:
+  //.long -1
+*/

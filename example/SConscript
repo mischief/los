@@ -1,0 +1,17 @@
+import os.path
+Import(['env'])
+
+files = Glob('*.c')
+subdirs = []
+
+SConscript([os.path.join(i, 'SConscript') for i in subdirs], exports = ['env'])
+
+files = [env.multiboot] + files + [env.razor_kern, env.razor_c]
+
+kernel = env.Program('razor',
+ files, 
+ LIBPATH='lib',
+ LINKFLAGS = env['LINKFLAGS']+' -T'+os.path.join(Dir('..').srcnode().path, 'src/link.ld')
+)
+
+env.Command('#/kernel', kernel, Copy("$TARGET", "$SOURCE"))

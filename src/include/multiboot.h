@@ -24,7 +24,10 @@
 #define MULTIBOOT_INFO_APM_TABLE	0x00000400
 #define MULTIBOOT_INFO_VIDEO_INFO	0x00000800
 
-#ifndef ASM_FILE
+#ifndef __asm__
+#include <compiler.h>
+
+BEGIN_DECLS
 
 typedef unsigned short  multiboot_uint16_t;
 typedef unsigned int    multiboot_uint32_t;
@@ -120,6 +123,8 @@ struct multiboot_mod_list {
 };
 
 typedef struct multiboot_mod_list multiboot_module_t;
+
+END_DECLS
 
 #endif /* !ASM_FILE */
 

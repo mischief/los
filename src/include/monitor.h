@@ -1,6 +1,7 @@
 #ifndef MONITOR_H
 #define MONITOR_H
 
+#include <compiler.h>
 #include <stdint.h>
 
 #define FG_BLACK 0
@@ -26,6 +27,8 @@
 #define BG_CYAN (FG_CYAN << 4)
 #define BG_WHITE (FG_WHITE << 4)
 
+BEGIN_DECLS
+
 void monitor_init(void);
 void monitor_put(char c);
 void monitor_clear(void);
@@ -34,5 +37,7 @@ void monitor_scroll(void);
 
 void monitor_set_fg(uint8_t color);
 void monitor_set_bg(uint8_t color);
+
+END_DECLS
 
 #endif
