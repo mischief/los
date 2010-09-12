@@ -1,5 +1,5 @@
-#ifndef KMAIN_H
-#define KMAIN_H
+#ifndef MULTIBOOT_MAIN_H
+#define MULTIBOOT_MAIN_H
 
 #include <compiler.h>
 #include <stdint.h>

@@ -1,0 +1,9 @@
+import os.path
+Import(['env'])
+
+files = []
+
+files += ['interrupt.S']
+files += Glob('*.c');
+
+env.kern_objects += env.Object(files)

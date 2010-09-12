@@ -54,30 +54,53 @@
 
 #ifndef ASSEMBLER
 
-#include <oskit/x86/types.h>
+//#include <oskit/x86/types.h>
+
+#include <stdint.h>
 
 /*
  * Real segment descriptor.
  */
+#if 0
 struct x86_desc {
-	unsigned int	limit_low:16,	/* limit 0..15 */
-			base_low:16,	/* base  0..15 */
-			base_med:8,	/* base  16..23 */
-			access:8,	/* access byte */
-			limit_high:4,	/* limit 16..19 */
-			granularity:4,	/* granularity */
-			base_high:8;	/* base 24..31 */
+	uint32_t	limit_low:16,		/* limit 0..15 */
+						base_low:16,		/* base  0..15 */
+						base_med:8,			/* base  16..23 */
+						access:8,				/* access byte */
+						limit_high:4,		/* limit 16..19 */
+						granularity:4,	/* granularity */
+						base_high:8;		/* base 24..31 */
+};
+#endif
+
+struct x86_desc {
+	uint16_t limit_low;
+	uint16_t base_low;
+	uint8_t base_med;
+	uint8_t access;
+	uint8_t granularity;
+	uint8_t base_high;
 };
 
 /*
  * Trap, interrupt, or call gate.
  */
+#if 0
 struct x86_gate {
-	unsigned int	offset_low:16,	/* offset 0..15 */
-			selector:16,
-			word_count:8,
-			access:8,
-			offset_high:16;	/* offset 16..31 */
+	uint32_t	offset_low:16,	/* offset 0..15 */
+						selector:16,
+						word_count:8,
+						access:8,
+						offset_high:16;	/* offset 16..31 */
+};
+#endif
+
+struct x86_gate {
+	uint16_t offset_low;
+	uint16_t selector;
+	uint8_t word_count;
+	uint8_t access;
+	uint16_t offset_high;
 };
 
 #endif /* !ASSEMBLER */
@@ -147,9 +170,11 @@ struct x86_gate {
 struct pseudo_descriptor
 {
 	//short pad;
-	oskit_s16_t limit;
-	oskit_addr_t linear_base;
-};
+	uint16_t limit;
+	uint32_t linear_base;
+} __attribute__((packed));
+
+#if 0
 
 OSKIT_INLINE void
 fill_descriptor(struct x86_desc *desc, unsigned base, unsigned limit,
@@ -217,9 +242,13 @@ fill_gate(struct x86_gate *gate, unsigned offset, unsigned short selector,
 	gate->offset_high = (offset >> 16) & 0xffff;
 }
 
+
+
 #ifdef CODE16
 #define i16_fill_descriptor fill_descriptor
 #define i16_fill_gate fill_gate
+#endif
+
 #endif
 
 #endif /* !ASSEMBLER */

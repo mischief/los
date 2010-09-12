@@ -1,5 +1,5 @@
-#ifndef MONITOR_H
-#define MONITOR_H
+#ifndef VIDEO_H
+#define VIDEO_H
 
 #include <compiler.h>
 #include <stdint.h>
@@ -29,14 +29,12 @@
 
 BEGIN_DECLS
 
-void monitor_init(void);
-void monitor_put(char c);
-void monitor_clear(void);
-void monitor_write(char *c);
-void monitor_scroll(void);
+void video_init(void);
+void video_put(char c);
+void video_write(char *c);
 
-void monitor_set_fg(uint8_t color);
-void monitor_set_bg(uint8_t color);
+void video_set_fg(uint8_t color);
+void video_set_bg(uint8_t color);
 
 END_DECLS
 

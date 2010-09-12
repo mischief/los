@@ -16,15 +16,14 @@ SECTIONS
 
     .data ALIGN(4096) :
     {
-      start_ctors = .;
-      *(.ctor*)
-      end_ctors = .;
+        start_ctors = .;
+        *(.ctor*)
+        end_ctors = .;
+        
+        start_dtors = .;
+        *(.dtor*)
+        end_dtors = .;
       
-      start_dtors = .;
-      *(.dtor*)
-      end_dtors = .;
-    
-      /*  data = .; _data = .; */
         *(.data)
         *(.gnu.linkonce.d*)
     }
@@ -32,16 +31,13 @@ SECTIONS
     .bss ALIGN(4096) :
     {
         *(.COMMON*)
-       /* bss = .; _bss = .; */
         *(.bss)
         *(.gnu.linkonce.b*)
     }
-
-    end = .; _end = .;
     
     /DISCARD/ :
     {
         *(.comment)
-      /**(.eh_frame) /* You should discard this unless you're implementing runtime support for C++ exceptions. */
+        *(.eh_frame) /* You should discard this unless you're implementing runtime support for C++ exceptions. */
     }
 }

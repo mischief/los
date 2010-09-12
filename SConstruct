@@ -6,7 +6,7 @@ opts = Variables('scache.conf')
 warnflags = ""
 warnflags += " -Wall -Wextra -Wundef -Wmissing-declarations -Wredundant-decls "
 warnflags += " -Wlong-long -Wfloat-equal "
-warnflags += " -Waggregate-return -Wcast-align -Wcast-qual -Wchar-subscripts -Wcomment -Wconversion "
+warnflags += " -Waggregate-return -Wcast-align -Wcast-qual -Wchar-subscripts -Wcomment " #-Wconversion "
 warnflags += " -Wno-deprecated-declarations -Wdisabled-optimization -Wno-div-by-zero -Wno-endif-labels "
 warnflags += " -Wfloat-equal -Wformat -Wformat=2 "
 warnflags += " -Wno-format-extra-args -Wformat-nonliteral -Wformat-security -Wformat-y2k -Wimplicit "
@@ -43,6 +43,7 @@ Help(opts.GenerateHelpText(env))
 opts.Save('scache.conf', env)
 
 env.Append(CFLAGS = ' -O' + env['optimization'])
+env.Append(ASFLAGS = ' -DASSEMBLER ')
 
 if env['debug'] == 1:
   env['CFLAGS'] += " -g "

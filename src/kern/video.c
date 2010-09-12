@@ -1,24 +1,10 @@
-#include <monitor.h>
+#include <video.h>
 #include <port.h>
 #include <string.h>
 
-static uint8_t *vmem;      /* video memory address */
-static uint16_t xpos;  /* X pos */
-static uint16_t ypos;  /* Y pos */
-static uint8_t attrib;     /* current attribute */
-
-static uint8_t cols;
-static uint8_t rows;
-
-void monitor_init(void) {
-  vmem = (uint8_t *) 0xB8000;
-  cols = 80;
-  rows = 25;
-  xpos = ypos = 0;
-  monitor_set_fg(FG_LIGHT_GREY);
-  monitor_set_bg(BG_BLUE);
-  monitor_clear();
-}
+static uint8_t *vmem;
+static uint16_t xpos, ypos;
+static uint8_t cols, rows, attrib;
 
 static void move_cursor(void) {
   /* do we really need this dumb shit? */
@@ -31,13 +17,29 @@ static void move_cursor(void) {
   */
 }
 
-void monitor_scroll(void) {
+static void video_scroll(void) {
   ypos--;
   memcpy(vmem, vmem + cols * 2, cols * (rows - 1) * 2);
   memset(vmem + cols * (rows - 1) * 2, 0, cols * 2);
 }
 
-void monitor_put(char c) {
+static void video_clear(void) {
+  memset(vmem, 0, cols * rows * 2);
+  xpos = ypos = 0;
+  move_cursor();
+}
+
+void video_init(void) {
+  vmem = (uint8_t *) 0xB8000;
+  cols = 80;
+  rows = 25;
+  xpos = ypos = 0;
+  video_set_fg(FG_LIGHT_GREY);
+  video_set_bg(BG_BLACK);
+  video_clear();
+}
+
+void video_put(char c) {
   if(c == '\r') {
     xpos = 0;
     return;
@@ -47,7 +49,7 @@ void monitor_put(char c) {
     xpos = 0;
     ypos++;
     if(ypos >= rows)
-      monitor_scroll();
+      video_scroll();
     if(c == '\n')
       return;
   }
@@ -69,22 +71,16 @@ void monitor_put(char c) {
   move_cursor();
 }
 
-void monitor_clear(void) {
-  memset(vmem, 0, cols * rows * 2);
-  xpos = ypos = 0;
-  move_cursor();
-}
-
-void monitor_write(char *c) {
+void video_write(char *c) {
   int i = 0;
   while(c[i])
-    monitor_put(c[i++]);
+    video_put(c[i++]);
 }
 
-void monitor_set_fg(uint8_t color) {
+void video_set_fg(uint8_t color) {
   attrib = (attrib & 0xF0) | (color & 0x0F);
 }
 
-void monitor_set_bg(uint8_t color) {
+void video_set_bg(uint8_t color) {
   attrib = (attrib & 0x0F) | (color & 0xF0);
 }
