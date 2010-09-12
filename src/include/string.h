@@ -4,6 +4,10 @@
 #include <compiler.h>
 #include <stdlib.h>
 
+#ifndef NULL
+#define NULL 0
+#endif
+
 BEGIN_DECLS
 
 /* copies n bytes between two memory areas, which must not overlap */

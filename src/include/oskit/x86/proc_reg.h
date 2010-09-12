@@ -110,24 +110,23 @@ OSKIT_INLINE void set_ss(unsigned short ss);
    For whatever bizzare reason, using the jmp-next-instruction hack
    sometimes causes a trap 15 to occur on the popfl instruction on a
    Pentium Pro 200.  Maybe the pushf's and popf's are too far apart...  */
-OSKIT_INLINE unsigned get_eflags(void)
-{
+OSKIT_INLINE unsigned get_eflags(void) {
 	unsigned eflags;
-	asm volatile("pushfl;"
+	__asm__ __volatile__("pushfl;"
 		"popl %0" : "=r" (eflags));
 	return eflags;
 }
 
 OSKIT_INLINE void set_eflags(unsigned eflags)
 {
-	asm volatile("pushl %0;"
+	__asm__ __volatile__("pushl %0;"
 		"popfl" : : "r" (eflags));
 }
 #else
 OSKIT_INLINE unsigned get_eflags(void)
 {
 	unsigned eflags;
-	asm volatile("jmp	1f;"
+	__asm__ __volatile__("jmp	1f;"
 	"1:	jmp	1f;"
 	"1:	jmp	1f;"
 	"1:	pushfl;"
@@ -140,7 +139,7 @@ OSKIT_INLINE unsigned get_eflags(void)
 
 OSKIT_INLINE void set_eflags(unsigned eflags)
 {
-	asm volatile("pushl %0"
+	__asm__ __volatile__("pushl %0"
 	"	jmp	1f;"
 	"1:	jmp	1f;"
 	"1:	jmp	1f;"
@@ -152,247 +151,247 @@ OSKIT_INLINE void set_eflags(unsigned eflags)
 }
 #endif
 
-OSKIT_INLINE void cli(void) { asm("cli"); }
-OSKIT_INLINE void sti(void) { asm("sti"); }
-OSKIT_INLINE void cld(void) { asm("cld"); }
+OSKIT_INLINE void cli(void) { __asm__("cli"); }
+OSKIT_INLINE void sti(void) { __asm__("sti"); }
+OSKIT_INLINE void cld(void) { __asm__("cld"); }
 #ifdef __cplusplus
 /* in C++, std is a reserved keyword -- so we use a function macro instead */
-#define std() asm("std")
+#define std() __asm__("std")
 #else
-OSKIT_INLINE void std(void) { asm("std"); }
+OSKIT_INLINE void std(void) { __asm__("std"); }
 #endif
-OSKIT_INLINE void clts(void) { asm("clts"); }
+OSKIT_INLINE void clts(void) { __asm__("clts"); }
 
 OSKIT_INLINE unsigned short get_cs(void)
 {
 	unsigned short cs;
-	asm volatile("movw %%cs,%w0" : "=r" (cs));
+	__asm__ __volatile__("movw %%cs,%w0" : "=r" (cs));
 	return cs;
 }
 
 OSKIT_INLINE unsigned short get_ds(void)
 {
 	unsigned short ds;
-	asm volatile("movw %%ds,%w0" : "=r" (ds));
+	__asm__ __volatile__("movw %%ds,%w0" : "=r" (ds));
 	return ds;
 }
 OSKIT_INLINE void set_ds(unsigned short ds)
 {
-	asm volatile("movw %w0,%%ds" : : "r" (ds));
+	__asm__ __volatile__("movw %w0,%%ds" : : "r" (ds));
 }
 
 OSKIT_INLINE unsigned short get_es(void)
 {
 	unsigned short es;
-	asm volatile("movw %%es,%w0" : "=r" (es));
+	__asm__ __volatile__("movw %%es,%w0" : "=r" (es));
 	return es;
 }
 OSKIT_INLINE void set_es(unsigned short es)
 {
-	asm volatile("movw %w0,%%es" : : "r" (es));
+	__asm__ __volatile__("movw %w0,%%es" : : "r" (es));
 }
 
 OSKIT_INLINE unsigned short get_fs(void)
 {
 	unsigned short fs;
-	asm volatile("movw %%fs,%w0" : "=r" (fs));
+	__asm__ __volatile__("movw %%fs,%w0" : "=r" (fs));
 	return fs;
 }
 OSKIT_INLINE void set_fs(unsigned short fs)
 {
-	asm volatile("movw %w0,%%fs" : : "r" (fs));
+	__asm__ __volatile__("movw %w0,%%fs" : : "r" (fs));
 }
 
 OSKIT_INLINE unsigned short get_gs(void)
 {
 	unsigned short gs;
-	asm volatile("movw %%gs,%w0" : "=r" (gs));
+	__asm__ __volatile__("movw %%gs,%w0" : "=r" (gs));
 	return gs;
 }
 OSKIT_INLINE void set_gs(unsigned short gs)
 {
-	asm volatile("movw %w0,%%gs" : : "r" (gs));
+	__asm__ __volatile__("movw %w0,%%gs" : : "r" (gs));
 }
 
 OSKIT_INLINE unsigned short get_ss(void)
 {
 	unsigned short ss;
-	asm volatile("movw %%ss,%w0" : "=r" (ss));
+	__asm__ __volatile__("movw %%ss,%w0" : "=r" (ss));
 	return ss;
 }
 OSKIT_INLINE void set_ss(unsigned short ss)
 {
-	asm volatile("movw %w0,%%ss" : : "r" (ss));
+	__asm__ __volatile__("movw %w0,%%ss" : : "r" (ss));
 }
 
 #define get_eax() \
     ({ \
 	register unsigned int _temp__; \
-	asm("movl %%eax, %0" : "=r" (_temp__)); \
+	__asm__("movl %%eax, %0" : "=r" (_temp__)); \
 	_temp__; \
     })
 
 #define get_ebx() \
     ({ \
 	register unsigned int _temp__; \
-	asm("movl %%ebx, %0" : "=r" (_temp__)); \
+	__asm__("movl %%ebx, %0" : "=r" (_temp__)); \
 	_temp__; \
     })
 
 #define get_ecx() \
     ({ \
 	register unsigned int _temp__; \
-	asm("movl %%ecx, %0" : "=r" (_temp__)); \
+	__asm__("movl %%ecx, %0" : "=r" (_temp__)); \
 	_temp__; \
     })
 
 #define get_edx() \
     ({ \
 	register unsigned int _temp__; \
-	asm("movl %%edx, %0" : "=r" (_temp__)); \
+	__asm__("movl %%edx, %0" : "=r" (_temp__)); \
 	_temp__; \
     })
 
 #define get_esi() \
     ({ \
 	register unsigned int _temp__; \
-	asm("movl %%esi, %0" : "=r" (_temp__)); \
+	__asm__("movl %%esi, %0" : "=r" (_temp__)); \
 	_temp__; \
     })
 
 #define get_edi() \
     ({ \
 	register unsigned int _temp__; \
-	asm("movl %%edi, %0" : "=r" (_temp__)); \
+	__asm__("movl %%edi, %0" : "=r" (_temp__)); \
 	_temp__; \
     })
 
 #define get_ebp() \
     ({ \
 	register unsigned int _temp__; \
-	asm("movl %%ebp, %0" : "=r" (_temp__)); \
+	__asm__("movl %%ebp, %0" : "=r" (_temp__)); \
 	_temp__; \
     })
 
 #define get_esp() \
     ({ \
 	register unsigned int _temp__; \
-	asm("movl %%esp, %0" : "=r" (_temp__)); \
+	__asm__("movl %%esp, %0" : "=r" (_temp__)); \
 	_temp__; \
     })
 
 #define get_eflags() \
     ({ \
 	register unsigned int _temp__; \
-	asm volatile("pushfl; popl %0" : "=r" (_temp__)); \
+	__asm__ __volatile__("pushfl; popl %0" : "=r" (_temp__)); \
 	_temp__; \
     })
 
 #define get_eip() \
     ({ \
 	register unsigned int _temp__; \
-	asm("1: movl $1b, %0" : "=r" (_temp__)); \
+	__asm__("1: movl $1b, %0" : "=r" (_temp__)); \
 	_temp__; \
     })
 
 #define	get_cr0() \
     ({ \
 	register unsigned int _temp__; \
-	asm volatile("mov %%cr0, %0" : "=r" (_temp__)); \
+	__asm__ __volatile__("mov %%cr0, %0" : "=r" (_temp__)); \
 	_temp__; \
     })
 
 #define	set_cr0(value) \
     ({ \
 	register unsigned int _temp__ = (value); \
-	asm volatile("mov %0, %%cr0" : : "r" (_temp__)); \
+	__asm__ __volatile__("mov %0, %%cr0" : : "r" (_temp__)); \
      })
 
 #ifdef HAVE_CR4
 #define get_cr4() \
     ({ \
 	register unsigned int _temp__; \
-	asm volatile("mov %%cr4, %0" : "=r" (_temp__)); \
+	__asm__ __volatile__("mov %%cr4, %0" : "=r" (_temp__)); \
 	_temp__; \
     })
 #define set_cr4(value) \
     ({ \
 	register unsigned int _temp__ = (value); \
-	asm volatile("mov %0, %%cr4" : : "r" (_temp__)); \
+	__asm__ __volatile__("mov %0, %%cr4" : : "r" (_temp__)); \
      })
 #else /* not HAVE_CR4 */
 #define get_cr4() \
     ({ \
 	register unsigned int _temp__; \
-	asm volatile(".byte 0x0f,0x20,0xe0" : "=a" (_temp__)); \
+	__asm__ __volatile__(".byte 0x0f,0x20,0xe0" : "=a" (_temp__)); \
 	_temp__; \
     })
 #define set_cr4(value) \
-	asm volatile(".byte 0x0f,0x22,0xe0" : : "a" (value));
+	__asm__ __volatile__(".byte 0x0f,0x22,0xe0" : : "a" (value));
 #endif /* HAVE_CR4 */
 
 #define get_msw() \
     ({ \
 	unsigned short _msw__; \
-	asm volatile("smsw %0" : "=r" (_msw__)); \
+	__asm__ __volatile__("smsw %0" : "=r" (_msw__)); \
 	_msw__; \
     })
 
 #define	get_cr2() \
     ({ \
 	register unsigned int _temp__; \
-	asm("mov %%cr2, %0" : "=r" (_temp__)); \
+	__asm__("mov %%cr2, %0" : "=r" (_temp__)); \
 	_temp__; \
     })
 
 #define	get_cr3() \
     ({ \
 	register unsigned int _temp__; \
-	asm("mov %%cr3, %0" : "=r" (_temp__)); \
+	__asm__("mov %%cr3, %0" : "=r" (_temp__)); \
 	_temp__; \
     })
 
 #define	set_cr3(value) \
     ({ \
 	register unsigned int _temp__ = (value); \
-	asm volatile("mov %0, %%cr3" : : "r" (_temp__)); \
+	__asm__ __volatile__("mov %0, %%cr3" : : "r" (_temp__)); \
      })
 
 #define	set_ts() \
 	set_cr0(get_cr0() | CR0_TS)
 
 #define	clear_ts() \
-	asm volatile("clts")
+	__asm__ __volatile__("clts")
 
 #define	get_tr() \
     ({ \
 	unsigned short _seg__; \
-	asm volatile("str %0" : "=rm" (_seg__) ); \
+	__asm__ __volatile__("str %0" : "=rm" (_seg__) ); \
 	_seg__; \
     })
 
 #define	set_tr(seg) \
-	asm volatile("ltr %0" : : "rm" ((unsigned short)(seg)) )
+	__asm__ __volatile__("ltr %0" : : "rm" ((unsigned short)(seg)) )
 
 #define set_gdt(pseudo_desc) \
     ({ \
-	asm volatile("lgdt %0" : : "m" ((pseudo_desc)->limit)); \
+	__asm__ __volatile__("lgdt %0" : : "m" ((pseudo_desc)->limit)); \
     })
 
 #define set_idt(pseudo_desc) \
     ({ \
-	asm volatile("lidt %0" : : "m" ((pseudo_desc)->limit)); \
+	__asm__ __volatile__("lidt %0" : : "m" ((pseudo_desc)->limit)); \
     })
 
 #define	get_ldt() \
     ({ \
 	unsigned short _seg__; \
-	asm volatile("sldt %0" : "=rm" (_seg__) ); \
+	__asm__ __volatile__("sldt %0" : "=rm" (_seg__) ); \
 	_seg__; \
     })
 
 #define	set_ldt(seg) \
-	asm volatile("lldt %0" : : "rm" ((unsigned short)(seg)) )
+	__asm__ __volatile__("lldt %0" : : "rm" ((unsigned short)(seg)) )
 
 /*
  * Read the 64-bit timestamp counter (TSC) register.
@@ -403,28 +402,28 @@ OSKIT_INLINE void set_ss(unsigned short ss)
 #define get_tsc() \
     ({ \
 	unsigned long low, high; \
-	asm volatile("rdtsc" : "=d" (high), "=a" (low)); \
+	__asm__ __volatile__("rdtsc" : "=d" (high), "=a" (low)); \
 	((unsigned long long)high << 32) | low; \
     })
 #define rdmsr(msr) \
     ({ \
 	unsigned long low, high; \
-	asm volatile("rdmsr" : "=d" (high), "=a" (low) : "c" (msr)); \
+	__asm__ __volatile__("rdmsr" : "=d" (high), "=a" (low) : "c" (msr)); \
 	((unsigned long long)high << 32) | low; \
     })
 #define wrmsr(msr, high, low) \
     ({ \
-	asm volatile("wrmsr" : : "d" (high), "a" (low), "c" (msr)); \
+	__asm__ __volatile__("wrmsr" : : "d" (high), "a" (low), "c" (msr)); \
     })
 #define wrmsrll(msr, val) \
     ({ \
-	asm volatile("wrmsr" : : "A" (val), "c" (msr)); \
+	__asm__ __volatile__("wrmsr" : : "A" (val), "c" (msr)); \
     })
 #else
 #define get_tsc() \
     ({ \
 	unsigned long low, high; \
-	asm volatile( \
+	__asm__ __volatile__( \
 	".byte 0x0f; .byte 0x31" \
 	: "=d" (high), "=a" (low)); \
 	((unsigned long long)high << 32) | low; \
@@ -432,18 +431,18 @@ OSKIT_INLINE void set_ss(unsigned short ss)
 #define rdmsr(msr) \
     ({ \
 	unsigned long low, high; \
-	asm volatile(".byte 0x0f; .byte 0x32;" \
+	__asm__ __volatile__(".byte 0x0f; .byte 0x32;" \
  	: "=d" (high), "=a" (low) : "c" (msr)); \
 	((unsigned long long)high << 32) | low; \
     })
 #define wrmsr(msr, high, low) \
     ({ \
-	asm volatile(".byte 0x0f; .byte 0x30" \
+	__asm__ __volatile__(".byte 0x0f; .byte 0x30" \
 	: : "d" (high), "a" (low), "c" (msr)); \
     })
 #define wrmsrll(msr, val) \
     ({ \
-	asm volatile(".byte 0x0f; .byte 0x30" \
+	__asm__ __volatile__(".byte 0x0f; .byte 0x30" \
 	: : "A" (val), "c" (msr)); \
     })
 #endif
@@ -454,7 +453,7 @@ OSKIT_INLINE void set_ss(unsigned short ss)
  * to flush the instruction queue.
  */
 #define flush_instr_queue() \
-	asm volatile("jmp	0f; 0:")
+	__asm__ __volatile__("jmp	0f; 0:")
 
 
 #endif	/* __GNUC__ */

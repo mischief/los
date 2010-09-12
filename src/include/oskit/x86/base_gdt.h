@@ -21,6 +21,9 @@
 #ifndef _OSKIT_X86_BASE_GDT_H_
 #define _OSKIT_X86_BASE_GDT_H_
 
+#include <oskit/x86/seg.h>
+
+
 #define BASE_TSS	0x08
 #define KERNEL_CS	0x10	/* Kernel's PL0 code segment */
 #define KERNEL_DS	0x18	/* Kernel's PL0 data segment */
@@ -37,10 +40,22 @@
 
 
 #ifndef ASSEMBLER
-#include <oskit/x86/seg.h>
+
 #include <oskit/compiler.h>
 
+extern struct x86_desc base_gdt[GDTSZ];
+
 OSKIT_BEGIN_DECLS
+/* Initialize the base GDT descriptors with sensible defaults.  */
+extern void base_gdt_init(void);
+
+/* Load the base GDT into the CPU.  */
+extern void base_gdt_load(void);
+
+/* 16-bit versions of the above functions,
+   which can be executed in real mode.  */
+extern void i16_base_gdt_init(void);
+extern void i16_base_gdt_load(void);
 OSKIT_END_DECLS
 
 #endif /* not ASSEMBLER */

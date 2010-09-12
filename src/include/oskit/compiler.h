@@ -38,6 +38,7 @@
  * XXX this is a GCC-ism that can't easily be worked around at the moment.
  * Would probably be best just to avoid using this if possible.
  */
+#define OSKIT_INLINE static __inline__
 #ifndef OSKIT_INLINE
 #define OSKIT_INLINE	extern __inline
 #endif

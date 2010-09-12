@@ -61,7 +61,6 @@
 /*
  * Real segment descriptor.
  */
-#if 0
 struct x86_desc {
 	uint32_t	limit_low:16,		/* limit 0..15 */
 						base_low:16,		/* base  0..15 */
@@ -71,8 +70,8 @@ struct x86_desc {
 						granularity:4,	/* granularity */
 						base_high:8;		/* base 24..31 */
 };
-#endif
 
+#if 0
 struct x86_desc {
 	uint16_t limit_low;
 	uint16_t base_low;
@@ -80,8 +79,8 @@ struct x86_desc {
 	uint8_t access;
 	uint8_t granularity;
 	uint8_t base_high;
-};
-
+} __attribute__((packed));
+#endif
 /*
  * Trap, interrupt, or call gate.
  */
@@ -167,44 +166,28 @@ struct x86_gate {
 
 
 /* Format of a "pseudo-descriptor", used for loading the IDT and GDT.  */
-struct pseudo_descriptor
-{
-	//short pad;
+struct pseudo_descriptor {
+	uint16_t __pad;
 	uint16_t limit;
 	uint32_t linear_base;
-} __attribute__((packed));
+};
 
+
+
+void fill_descriptor(struct x86_desc *desc, unsigned base, unsigned limit,
+	unsigned char access, unsigned char sizebits);
+		
 #if 0
-
-OSKIT_INLINE void
-fill_descriptor(struct x86_desc *desc, unsigned base, unsigned limit,
-		unsigned char access, unsigned char sizebits);
 OSKIT_INLINE void
 fill_descriptor_base(struct x86_desc *desc, unsigned base);
 OSKIT_INLINE void
 fill_descriptor_limit(struct x86_desc *desc, unsigned limit);
-OSKIT_INLINE void
-fill_gate(struct x86_gate *gate, unsigned offset, unsigned short selector,
-	  unsigned char access, unsigned char word_count);
+#endif
+void fill_gate(struct x86_gate *gate, unsigned offset, unsigned short selector,
+	unsigned char access, unsigned char word_count);
 
-/* Fill a segment descriptor.  */
-OSKIT_INLINE void
-fill_descriptor(struct x86_desc *desc, unsigned base, unsigned limit,
-		unsigned char access, unsigned char sizebits)
-{
-	if (limit > 0xfffff)
-	{
-		limit >>= 12;
-		sizebits |= SZ_G;
-	}
-	desc->limit_low = limit & 0xffff;
-	desc->base_low = base & 0xffff;
-	desc->base_med = (base >> 16) & 0xff;
-	desc->access = access | ACC_P;
-	desc->limit_high = limit >> 16;
-	desc->granularity = sizebits;
-	desc->base_high = base >> 24;
-}
+
+#if 0
 
 /* Set the base address in a segment descriptor.  */
 OSKIT_INLINE void
@@ -225,30 +208,16 @@ fill_descriptor_limit(struct x86_desc *desc, unsigned limit)
 		desc->granularity |= SZ_G;
 	}
 	else
-		desc->granularity &= ~SZ_G;
+	desc->granularity &= ~SZ_G;
 	desc->limit_low = limit & 0xffff;
 	desc->limit_high = limit >> 16;
 }
-
-/* Fill a gate with particular values.  */
-OSKIT_INLINE void
-fill_gate(struct x86_gate *gate, unsigned offset, unsigned short selector,
-	  unsigned char access, unsigned char word_count)
-{
-	gate->offset_low = offset & 0xffff;
-	gate->selector = selector;
-	gate->word_count = word_count;
-	gate->access = access | ACC_P;
-	gate->offset_high = (offset >> 16) & 0xffff;
-}
-
+#endif
 
 
 #ifdef CODE16
 #define i16_fill_descriptor fill_descriptor
 #define i16_fill_gate fill_gate
-#endif
-
 #endif
 
 #endif /* !ASSEMBLER */
