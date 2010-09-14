@@ -24,3 +24,7 @@ void base_trap_init(void)
 {
   gate_init(base_idt, base_trap_inittab, KERNEL_CS);
 }
+
+void base_trap_handler(struct trap_state *ts) {
+  (*base_trap_handlers[ts->trapno])(ts);
+}

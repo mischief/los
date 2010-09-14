@@ -1,13 +1,9 @@
 import os.path
 Import(['env'])
 
-files = Glob('*.c')
-subdirs = [ env['arch'] ]
-
-env.kern_objects = []
+files = [ Glob('*.c') + Glob('*.S') ]
+subdirs = []
 
 env.kern_objects += files
 
 SConscript([os.path.join(i, 'SConscript') for i in subdirs], exports = ['env'])
-
-env.razor_kern = env.StaticLibrary('razor_kern', env.kern_objects)

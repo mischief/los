@@ -8,9 +8,7 @@ void base_gdt_load(void) {
   pdesc.linear_base = (volatile uint32_t) &base_gdt;
   
   set_gdt(&pdesc);
-  
-  __asm__ __volatile__("xchg %bx, %bx");
-  
+    
   __asm__ __volatile__("ljmp %0,$1f; 1:" : : "i" (KERNEL_CS));
   set_ds(KERNEL_DS);
   set_es(KERNEL_DS);

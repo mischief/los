@@ -34,7 +34,7 @@ void video_init(void) {
   cols = 80;
   rows = 25;
   xpos = ypos = 0;
-  video_set_fg(FG_LIGHT_GREY);
+  video_set_fg(FG_WHITE);
   video_set_bg(BG_BLACK);
   video_clear();
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1994-1995, 1998 University of Utah and the Flux Group.
+ * Copyright (c) 1995, 1998 University of Utah and the Flux Group.
  * All rights reserved.
  * 
  * This file is part of the Flux OSKit.  The OSKit is free software, also known
@@ -14,30 +14,26 @@
  * received a copy of the GPL along with the OSKit; see the file COPYING.  If
  * not, write to the FSF, 59 Temple Place #330, Boston, MA 02111-1307, USA.
  */
-#ifndef _OSKIT_X86_BASE_IDT_H_
-#define _OSKIT_X86_BASE_IDT_H_
+#ifndef _OSKIT_C_ASSERT_H_
+#define _OSKIT_C_ASSERT_H_
+
+#ifdef NDEBUG
+
+#define assert(ignore) ((void)0)
+
+#else
 
 #include <oskit/compiler.h>
-#include <oskit/x86/seg.h>
-
-
-/* The base environment provides a full-size 256-entry IDT.
-   This is needed, for example, under VCPI or Intel MP Standard PCs.  */
-#define IDTSZ	256
-
-extern struct x86_gate base_idt[IDTSZ];
-
-
-/* Note that there is no base_idt_init() function,
-   because the IDT is used for both trap and interrupt vectors.
-   To initialize the processor trap vectors, call base_trap_init().
-   Inititalizing hardware interrupt vectors is platform-specific.  */
-
 
 OSKIT_BEGIN_DECLS
-/* Load the base IDT into the CPU.  */
-extern void base_idt_load(void);
+extern void panic(const char *format, ...) OSKIT_NORETURN;
 OSKIT_END_DECLS
 
+#define assert(expression)  \
+	((void)((expression) ? 0 : \
+		(panic(__FILE__":%u: failed assertion `"#expression"'", \
+			__LINE__), 0)))
 
-#endif /* _OSKIT_X86_BASE_IDT_H_ */
+#endif
+
+#endif /* _OSKIT_C_ASSERT_H_ */

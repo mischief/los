@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1994-1995, 1998 University of Utah and the Flux Group.
+ * Copyright (c) 1996, 1998 University of Utah and the Flux Group.
  * All rights reserved.
  * 
  * This file is part of the Flux OSKit.  The OSKit is free software, also known
@@ -15,15 +15,18 @@
  * not, write to the FSF, 59 Temple Place #330, Boston, MA 02111-1307, USA.
  */
 
-#include <oskit/x86/base_gdt.h>
+#include <oskit/x86/proc_reg.h>
+#include <oskit/x86/base_vm.h>
 #include <oskit/x86/base_idt.h>
-//#include <oskit/x86/base_tss.h>
-#include <oskit/x86/base_cpu.h>
 
-void base_cpu_load(void)
-{
-	base_gdt_load();
-	base_idt_load();
-//	base_tss_load();
+void base_idt_load(void) {
+  volatile struct pseudo_descriptor pdesc;
+  pdesc.__pad = 0;
+  /* Create a pseudo-descriptor describing the GDT.  */
+  pdesc.limit = sizeof(base_idt) - 1;
+  //~ pdesc.linear_base = kvtolin(&base_idt);
+  pdesc.linear_base = (volatile uint32_t) &base_idt;
+
+  /* Load the IDT.  */
+  set_idt(&pdesc);
 }
-

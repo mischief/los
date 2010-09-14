@@ -10,7 +10,7 @@ files = [env.multiboot] + files + [env.razor_kern, env.razor_c]
 
 kernel = env.Program('razor',
  files, 
- LIBPATH='lib',
+ #LIBPATH='lib',
  LINKFLAGS = env['LINKFLAGS']+' -T'+os.path.join(Dir('..').srcnode().path, 'src/link.ld')
 )
 

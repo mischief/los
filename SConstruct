@@ -48,15 +48,16 @@ env.Append(ASFLAGS = ' -DASSEMBLER ')
 if env['debug'] == 1:
   env['CFLAGS'] += " -g "
   env['CXXFLAGS'] += " -g "
+  env.Append(CPPDEFINES = "DEBUG")
 
 if env['verbose'] != 1:
-  env['ARCOMSTR'] = "$AR $TARGET"
-  env['ASCOMSTR'] = "$AS $TARGET"
-  env['ASPPCOMSTR'] = "$AS $TARGET"
-  env['CCCOMSTR'] = "$CC $TARGET"
-  env['CXXCOMSTR'] = "$CXX $TARGET"
-  env['LINKCOMSTR'] = "$LINK $TARGET"
-  env['RANLIBCOMSTR'] = "$RANLIB $TARGET"
+  env['ARCOMSTR'] = "$AR\t $TARGET"
+  env['ASCOMSTR'] = "$AS\t $TARGET"
+  env['ASPPCOMSTR'] = "$AS\t $TARGET"
+  env['CCCOMSTR'] = "$CC\t $TARGET"
+  env['CXXCOMSTR'] = "$CXX\t $TARGET"
+  env['LINKCOMSTR'] = "$LINK\t $TARGET"
+  env['RANLIBCOMSTR'] = "$RANLIB\t $TARGET"
 
 SConscript('SConscript', exports='env', variant_dir = env['BUILDDIR'] , duplicate = 0 )
 

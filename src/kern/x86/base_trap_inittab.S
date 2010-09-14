@@ -68,31 +68,31 @@
 /*
  * No error code.  Clear error code and push trap number.
  */
-#define	EXCEPTION(n,name)					\
-	GATE_ENTRY(n,name,ACC_PL_K | ACC_TRAP_GATE)		;\
-name:								;\
-	pushl	$(0)						;\
-	pushl	$(n)						;\
-	jmp	alltraps
+#define	EXCEPTION(n,name) \
+  GATE_ENTRY(n,name,ACC_PL_K | ACC_TRAP_GATE)	;\
+name:	;\
+  pushl $(0)	;\
+  pushl	$(n)	;\
+  jmp	alltraps
 
 /*
  * User-accessible exception.  Otherwise, same as above.
  */
-#define	EXCEP_USR(n,name)					\
-	GATE_ENTRY(n,name,ACC_PL_U | ACC_TRAP_GATE)		;\
-name:								;\
-	pushl	$(0)						;\
-	pushl	$(n)						;\
-	jmp	alltraps
+#define	EXCEP_USR(n,name)	\
+  GATE_ENTRY(n,name,ACC_PL_U | ACC_TRAP_GATE)	;\
+name:	;\
+  pushl	$(0)	;\
+  pushl	$(n)	;\
+  jmp	alltraps
 
 /*
  * Error code has been pushed.  Just push trap number.
  */
-#define	EXCEP_ERR(n,name)					\
-	GATE_ENTRY(n,name,ACC_PL_K | ACC_TRAP_GATE)		;\
-name:								;\
-	pushl	$(n)						;\
-	jmp	alltraps
+#define	EXCEP_ERR(n,name)	\
+  GATE_ENTRY(n,name,ACC_PL_K | ACC_TRAP_GATE)	;\
+name:	;\
+  pushl	$(n)	;\
+  jmp	alltraps
 
 
 GATE_INITTAB_BEGIN(base_trap_inittab)
@@ -133,6 +133,46 @@ GATE_INITTAB_END
 
 alltraps:
 
+  /* setup trap_state on the stack */
+
+  pusha
+  push %ds
+  push %es
+  push %fs
+  push %gs
+  
+  mov %ss, %ax
+  mov %ax, %ds
+  mov %ax, %es
+  
+  cld
+  
+  /* call handler, which calls the proper
+   * entry in the base_trap_handlers table */
+   
+  /* note: if push %esp is here, trap_handler
+   * needs to be declared as
+   * void trap_handler(struct trap_state *);
+   * without it:
+   * void trap_handler(struct trap_state);
+   * */
+  
+  push %esp
+  call base_trap_handler
+  pop %edx
+  
+  /* cleanup */
+  
+  pop %gs
+  pop %fs
+  pop %es
+  pop %ds
+  popa
+  add $4*2, %esp
+  iret
+
+
+#if 0
 	/*
 	 * Save the rest of the state frame.
 	 * Note that on the 486 and up,
@@ -243,3 +283,4 @@ alltraps:
 	orl	%eax,%eax
 	jz	2b	/* gdb handler happy, resume above */
 	jmp	3b	/* gdb handler not happy, try normal handler */
+#endif

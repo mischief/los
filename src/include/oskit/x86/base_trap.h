@@ -138,6 +138,8 @@ extern struct gate_init_entry base_trap_inittab[];
  */
 extern int (*base_trap_handlers[])(struct trap_state *ts);
 
+extern void base_trap_handler(struct trap_state *ts);
+
 /*
  * Default trap handler for unexpected traps, which simply calls
  * trap_dump_panic.

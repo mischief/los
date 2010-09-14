@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1994-1995, 1998 University of Utah and the Flux Group.
+ * Copyright (c) 1997-1998 University of Utah and the Flux Group.
  * All rights reserved.
  * 
  * This file is part of the Flux OSKit.  The OSKit is free software, also known
@@ -14,30 +14,15 @@
  * received a copy of the GPL along with the OSKit; see the file COPYING.  If
  * not, write to the FSF, 59 Temple Place #330, Boston, MA 02111-1307, USA.
  */
-#ifndef _OSKIT_X86_BASE_IDT_H_
-#define _OSKIT_X86_BASE_IDT_H_
-
-#include <oskit/compiler.h>
-#include <oskit/x86/seg.h>
 
 
-/* The base environment provides a full-size 256-entry IDT.
-   This is needed, for example, under VCPI or Intel MP Standard PCs.  */
-#define IDTSZ	256
+#include <oskit/x86/base_trap.h>
+//#include <oskit/debug.h>
 
-extern struct x86_gate base_idt[IDTSZ];
+void trap_dump_panic(const struct trap_state *st)
+{
+	trap_dump(st);
 
+	//panic("terminated due to trap\n");
+}
 
-/* Note that there is no base_idt_init() function,
-   because the IDT is used for both trap and interrupt vectors.
-   To initialize the processor trap vectors, call base_trap_init().
-   Inititalizing hardware interrupt vectors is platform-specific.  */
-
-
-OSKIT_BEGIN_DECLS
-/* Load the base IDT into the CPU.  */
-extern void base_idt_load(void);
-OSKIT_END_DECLS
-
-
-#endif /* _OSKIT_X86_BASE_IDT_H_ */

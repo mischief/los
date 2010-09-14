@@ -1,9 +1,9 @@
 import os.path
 Import(['env'])
 
-files = []
+files = [ Glob('*.c') + Glob('*.S') ]
+subdirs = ['pc']
 
-files += ['interrupt.S']
-files += Glob('*.c');
+env.kern_objects += files
 
-env.kern_objects += env.Object(files)
+SConscript([os.path.join(i, 'SConscript') for i in subdirs], exports = ['env'])
