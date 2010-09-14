@@ -48,9 +48,9 @@ void trap_dump(const struct trap_state *st)
 
 	/* Dump the top of the stack too.  */
 	if (!from_user) {
-		printf("top 64 words of stack:\n");
+		printf("top 32 words of stack:\n");
 
-		for (i = 0; i < 64; i++) {
+		for (i = 0; i < 32; i++) {
 			if(i % 4 == 0)
 				printf("%p: ", (&st->esp)+i);
 				

@@ -23,9 +23,6 @@
 
 int base_trap_default_handler(struct trap_state *ts)
 {
-	//~ printf("Harro from %s\n", __FUNCTION__);
 	trap_dump_panic((const struct trap_state *) ts);
-
 	return 0;
 }
-

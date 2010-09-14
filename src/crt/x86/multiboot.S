@@ -9,6 +9,7 @@
 
   .text
   .global start, _start
+  .global hang
 
 start:
 _start:

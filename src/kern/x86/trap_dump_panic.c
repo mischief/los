@@ -17,12 +17,12 @@
 
 
 #include <oskit/x86/base_trap.h>
-//#include <oskit/debug.h>
+#include <oskit/debug.h>
 
 void trap_dump_panic(const struct trap_state *st)
 {
 	trap_dump(st);
 
-	//panic("terminated due to trap\n");
+	panic("terminated due to trap\n");
 }
 

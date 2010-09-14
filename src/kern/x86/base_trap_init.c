@@ -26,5 +26,5 @@ void base_trap_init(void)
 }
 
 void base_trap_handler(struct trap_state *ts) {
-  (*base_trap_handlers[ts->trapno])(ts);
+  (void) (*base_trap_handlers[ts->trapno])(ts);
 }

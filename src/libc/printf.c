@@ -169,7 +169,7 @@ static int print(char **out, const char *fmt, va_list ap) {
       ++pc;
     }
     
-  next:
+  //~ next:
     ++i; ++c;
   }
     

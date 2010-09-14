@@ -9,5 +9,6 @@ void panic(const char *format, ...) {
   va_end(vl);
   printf("\n");
 
-  //~ __asm__ __volatile__("int $0x0");
+  //~ __asm__ __volatile__("ljmp *hang");
+  
 }
