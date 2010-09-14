@@ -26,8 +26,8 @@
 #include <oskit/compiler.h>
 
 OSKIT_BEGIN_DECLS
-//~ extern void panic(const char *format, ...) OSKIT_NORETURN;
-extern void panic(const char *format, ...);
+extern void panic(const char *format, ...) OSKIT_NORETURN;
+//~ extern void panic(const char *format, ...);
 OSKIT_END_DECLS
 
 #define assert(expression)  \
