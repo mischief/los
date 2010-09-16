@@ -3,14 +3,20 @@
 
 #include <compiler.h>
 #include <stdint.h>
-#include <multiboot.h>
+//~ #include <multiboot.h>
+#include <oskit/x86/pc/base_multiboot.h>
 
-extern struct multiboot_info boot_info;
+#define VERSION_MAJOR 0
+#define VERSION_MINOR 5
 
-BEGIN_DECLS
+#define VERSION (VERSION_MAJOR + VERSION_MINOR / 100.0)
 
-void multiboot_main(struct multiboot_info *mb_boot_info, uint64_t magic);
+//~ extern struct multiboot_info boot_info;
 
-END_DECLS
+//~ BEGIN_DECLS
+
+//~ void multiboot_main(struct multiboot_info *mb_boot_info, uint64_t magic);
+
+//~ END_DECLS
 
 #endif

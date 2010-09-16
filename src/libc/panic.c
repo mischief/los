@@ -10,5 +10,6 @@ void panic(const char *format, ...) {
   printf("\n");
 
   __asm__ __volatile__("cli; hlt");
+  for(;;);
   
 }

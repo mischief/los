@@ -13,7 +13,7 @@ warnflags += " -Wno-format-extra-args -Wformat-nonliteral -Wformat-security -Wfo
 warnflags += " -Wimport -Wno-import -Winit-self "
 warnflags += " -Winline -Winvalid-pch -Wlong-long -Wmissing-braces "
 warnflags += " -Wmissing-field-initializers -Wmissing-format-attribute "
-warnflags += " -Wmissing-noreturn -Wno-multichar -Wpacked -Wparentheses "
+warnflags += " -Wno-multichar -Wpacked -Wparentheses " # -Wmissing-noreturn
 warnflags += " -Wpointer-arith -Wredundant-decls -Wreturn-type -Wsequence-point -Wshadow -Wsign-compare "
 warnflags += " -Wstrict-aliasing -Wstrict-aliasing=2 -Wswitch "
 warnflags += " -Wsystem-headers -Wtrigraphs"
@@ -31,7 +31,7 @@ opts.AddVariables(
     ('CXXFLAGS', 'Set the C++ compiler flags', warnflags+' -Wno-write-strings -nostdlib -fno-builtin -nostartfiles -nodefaultlibs -fno-exceptions -fno-rtti -fno-stack-protector -Isrc/include'),
     ('ASFLAGS', 'Set the assembler flags', warnflags+cwarnflags+' -nostdlib -ffreestanding -Isrc/include'),
     ('LINKFLAGS', 'Set the linker flags', '-nostdlib'),
-    EnumVariable('optimization', 'Set optimization level. 0 1 2 or 3', '1', allowed_values=('0','1','2','3')),
+    EnumVariable('optimization', 'Set optimization level. s 0 1 2 or 3', '1', allowed_values=('s','0','1','2','3')),
     ('BUILDDIR', 'Set the sub-directory to put object files in', 'build'),
     BoolVariable('verbose', 'Show full commands during the build process', False),
     ('arch', 'Set the target architecture', 'x86'),

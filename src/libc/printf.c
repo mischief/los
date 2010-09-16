@@ -130,10 +130,13 @@ static int print(char **out, const char *fmt, va_list ap) {
         width *= 10;
         width += *c - '0';
       }
+      
+      if(*c == 'l')
+        c++;
 
       switch(*c) {
       case 'd':
-        pc += printi(out, va_arg(ap, int), 10, 1, width, pad, 'a');
+        pc += printi(out, va_arg(ap, long), 10, 1, width, pad, 'a');
         break;
       case 'u':
         pc += printi(out, va_arg(ap, unsigned long), 10, 0, width, pad, 'a');

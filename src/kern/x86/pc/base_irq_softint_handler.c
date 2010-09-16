@@ -17,11 +17,11 @@
 
 #include <oskit/x86/pc/base_irq.h>
 #include <oskit/x86/base_trap.h>
-//#include <oskit/debug.h>
+//~ #include <oskit/debug.h>
 
 void base_irq_softint_default_handler(struct trap_state *ts)
 {
 	trap_dump(ts);
-	//panic("unexpected software interrupt");
+	trap_dump_panic(ts);
+	//~ panic("unexpected software interrupt");
 }
-

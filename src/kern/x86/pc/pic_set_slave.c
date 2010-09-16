@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997-1998 University of Utah and the Flux Group.
+ * Copyright (c) 1995-1998 University of Utah and the Flux Group.
  * All rights reserved.
  * 
  * This file is part of the Flux OSKit.  The OSKit is free software, also known
@@ -14,14 +14,31 @@
  * received a copy of the GPL along with the OSKit; see the file COPYING.  If
  * not, write to the FSF, 59 Temple Place #330, Boston, MA 02111-1307, USA.
  */
+
+#include <oskit/x86/pio.h>
+#include <oskit/x86/proc_reg.h>
+#include <oskit/x86/pc/pic.h>
+
 /*
- * Default TRAP handler for unexpected hardware traps
+ * Program the slave PIC to use a different set of interrupt vectors
+ * without disturbing the PIC's current interrupt enable mask.
+ * Assumes processor interrupt flag is off.
  */
-
-#include <oskit/x86/base_trap.h>
-
-int base_trap_default_handler(struct trap_state *ts)
+ #if 0
+void pic_set_slave(int base)
 {
-	trap_dump_panic((const struct trap_state *) ts);
-	return 0;
+	unsigned char old_mask;
+
+	/* Save the original interrupt mask.  */
+	old_mask = inb(SLAVES_OCW);	PIC_DELAY();
+
+	/* Initialize the slave PIC.  */
+	outb(SLAVES_ICW, PICS_ICW1);	PIC_DELAY();
+	outb(SLAVES_OCW, base);		PIC_DELAY();
+	outb(SLAVES_OCW, PICS_ICW3);	PIC_DELAY();
+	outb(SLAVES_OCW, PICS_ICW4);	PIC_DELAY();
+
+	/* Restore the original interrupt mask.  */
+	outb(SLAVES_OCW, old_mask);	PIC_DELAY();
 }
+#endif
