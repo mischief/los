@@ -1,0 +1,17 @@
+import os.path
+Import(['env'])
+
+files = Glob('*.c')
+subdirs = []
+
+env.posix_objects = []
+
+env.posix_objects += files
+
+#env.Append(CPPFLAGS = '-Iinclude/oskit/c')
+
+SConscript([os.path.join(i, 'SConscript') for i in subdirs], exports = ['env'])
+
+env.oskit_posix = env.StaticLibrary('oskit_posix', env.posix_objects)
+
+env.Command('#lib/${SOURCE}', env.oskit_posix, Copy("$TARGET", "$SOURCE"))

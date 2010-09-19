@@ -1,0 +1,6 @@
+import os.path
+Import(['env'])
+
+subdirs = ['sys']
+
+SConscript([os.path.join(i, 'SConscript') for i in subdirs], exports = ['env'])

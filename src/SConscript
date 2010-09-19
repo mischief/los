@@ -1,6 +1,14 @@
 import os.path
 Import(['env'])
 
-subdirs = ['crt', 'kern', 'libc']
+# , 'com'
+subdirs = [
+'crt', 'kern', 'lmm',
+'clientos', 'libc',
+'posix',
+'com'
+]
+
+Mkdir("#lib")
 
 SConscript([os.path.join(i, 'SConscript') for i in subdirs], exports = ['env'])

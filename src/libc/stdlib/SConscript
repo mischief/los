@@ -1,0 +1,9 @@
+import os.path
+Import(['env'])
+
+files = [ Glob('*.c') ]
+subdirs = []
+
+env.libc_objects += files
+
+SConscript([os.path.join(i, 'SConscript') for i in subdirs], exports = ['env'])

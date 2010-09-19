@@ -1,7 +1,8 @@
 import os.path
 Import(['env'])
 
-#multiboot = env.StaticLibrary('multiboot.S')
 env.multiboot = env.Object('multiboot.S')
 
-#env.Command('#lib/${SOURCE}', multiboot, Copy("$TARGET", "$SOURCE"))
+#env.multiboot = env.StaticLibrary('multiboot.S')
+
+env.Command('#lib/${SOURCE}', env.multiboot, Copy("$TARGET", "$SOURCE"))

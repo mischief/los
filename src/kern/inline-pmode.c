@@ -1,0 +1,11 @@
+#include <oskit/x86/proc_reg.h>
+#include <oskit/x86/atomic.h>
+#include <oskit/x86/debug_reg.h>
+#include <oskit/x86/seg.h>
+#include <oskit/x86/paging.h>
+#include <oskit/x86/base_paging.h>
+#include <oskit/x86/pc/i16_bios.h>
+#include <oskit/x86/pc/i16_dos.h>
+#undef OSKIT_INLINE
+#define OSKIT_INLINE
+#include <oskit/x86/pmode.h>

@@ -1,0 +1,13 @@
+import os.path
+Import(['env'])
+
+files = Glob('*.c')
+subdirs = []
+
+env.lmm_objects = [ files ]
+
+SConscript([os.path.join(i, 'SConscript') for i in subdirs], exports = ['env'])
+
+env.oskit_lmm = env.StaticLibrary('oskit_lmm', env.lmm_objects)
+
+env.Command('#lib/${SOURCE}', env.oskit_lmm, Copy("$TARGET", "$SOURCE"))

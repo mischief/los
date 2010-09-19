@@ -21,8 +21,8 @@
 #include <oskit/x86/pc/base_multiboot.h>
 #include <oskit/x86/multiboot.h>
 #include <oskit/x86/base_vm.h>
-//~ #include <oskit/c/stdio.h>
-#include <stdio.h>
+#include <oskit/c/stdio.h>
+//~ #include <stdio.h>
 
 void
 multiboot_info_dump(struct multiboot_info *bi)
@@ -77,8 +77,7 @@ multiboot_info_dump(struct multiboot_info *bi)
 		struct AddrRangeDesc *rdesc;
 		unsigned end;
 
-		printf("  Memory Map:\n      addr: 0x%08x,"
-		       " count: %d\n", 
+		printf("  memory map addr: 0x%08x count/length: %d\n", 
 		       bi->mmap_addr, bi->mmap_count);
 
 		/* XXX Count is currently the length in bytes of the
@@ -93,7 +92,8 @@ multiboot_info_dump(struct multiboot_info *bi)
 			 * I'd rather use .0 precision for the High
 			 * entries (since they're guaranteed to be 0
 			 * on a PC), but this works too.  */
-			printf("      base: 0x");
+						 
+			printf(" base: 0x");
 			if (rdesc->BaseAddrHigh)
 				printf("%08x", rdesc->BaseAddrHigh);
 			printf("%08x length: 0x", rdesc->BaseAddrLow);
@@ -110,7 +110,7 @@ multiboot_info_dump(struct multiboot_info *bi)
 				printf("reserved\n");
 				break;
 			default:
-				printf("undefined (%d)\n", rdesc->Type);
+				printf("undefined (%u)\n", rdesc->Type);
 			}
 
 			rdesc += rdesc->size + 4;

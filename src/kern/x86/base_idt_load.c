@@ -25,7 +25,7 @@ void base_idt_load(void) {
   /* Create a pseudo-descriptor describing the GDT.  */
   pdesc.limit = sizeof(base_idt) - 1;
   //~ pdesc.linear_base = kvtolin(&base_idt);
-  pdesc.linear_base = (volatile uint32_t) &base_idt;
+  pdesc.linear_base = (volatile oskit_addr_t) &base_idt;
 
   /* Load the IDT.  */
   set_idt(&pdesc);

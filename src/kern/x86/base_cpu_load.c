@@ -17,13 +17,13 @@
 
 #include <oskit/x86/base_gdt.h>
 #include <oskit/x86/base_idt.h>
-//#include <oskit/x86/base_tss.h>
+#include <oskit/x86/base_tss.h>
 #include <oskit/x86/base_cpu.h>
 
 void base_cpu_load(void)
 {
 	base_gdt_load();
 	base_idt_load();
-//	base_tss_load();
+	base_tss_load();
 }
 

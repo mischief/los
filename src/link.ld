@@ -40,4 +40,6 @@ SECTIONS
         *(.comment)
         *(.eh_frame) /* You should discard this unless you're implementing runtime support for C++ exceptions. */
     }
+    
+    end = .; _end = .;
 }

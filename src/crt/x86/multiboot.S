@@ -1,6 +1,8 @@
 #ifndef __asm__
 #define __asm__ 1
 #include <multiboot.h>
+#include <oskit/x86/base_stack.h>
+//#include <oskit/x86/base_multiboot.h>
 #endif
 
 #define STACK_SIZE 0x4000
@@ -9,6 +11,9 @@
 
   .text
   .global start, _start
+  
+	.globl	_start_of_kernel
+_start_of_kernel:
 
 start:
 _start:
@@ -21,7 +26,8 @@ multiboot_header:
   .long -(MULTIBOOT_HEADER_MAGIC + MULTIBOOT_HEADER_FLAGS)
 
 multiboot_entry:
-  mov   $(stack + STACK_SIZE), %esp
+  //;~ mov   $(stack + STACK_SIZE), %esp
+  mov   $(base_stack_start + BASE_STACK_SIZE), %esp
   
   /* set eflags to known state */
   pushl $0
@@ -60,7 +66,7 @@ hang:
   hlt
   jmp   hang
 
-  .comm stack, STACK_SIZE, 32
+  //;~ .comm stack, STACK_SIZE, 32
 
 /*
   .section .ctors, "aw", @progbits

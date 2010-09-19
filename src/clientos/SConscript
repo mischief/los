@@ -1,0 +1,17 @@
+import os.path
+Import(['env'])
+
+files = Glob('*.c')
+subdirs = []
+
+env.clientos_objects = []
+
+env.clientos_objects += files
+
+#env.Append(CPPFLAGS = '-Iinclude/oskit/c')
+
+SConscript([os.path.join(i, 'SConscript') for i in subdirs], exports = ['env'])
+
+env.oskit_clientos = env.StaticLibrary('oskit_clientos', env.clientos_objects)
+
+env.Command('#lib/${SOURCE}', env.oskit_clientos, Copy("$TARGET", "$SOURCE"))
