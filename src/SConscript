@@ -6,7 +6,11 @@ subdirs = [
 'crt', 'kern', 'lmm',
 'clientos', 'libc',
 'posix',
-'com'
+'com',
+'dev',
+#'linux',
+'diskpart',
+'memdebug'
 ]
 
 Mkdir("#lib")

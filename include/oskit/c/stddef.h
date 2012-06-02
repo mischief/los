@@ -29,6 +29,8 @@ typedef oskit_size_t size_t;
 typedef oskit_wchar_t wchar_t;
 #endif
 
+typedef long ptrdiff_t;
+
 #ifndef NULL
 #define NULL 0
 #endif

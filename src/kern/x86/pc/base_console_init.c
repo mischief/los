@@ -44,7 +44,11 @@ oskit_stream_t *console = &boot_direct_console;
                                         /* Currently selected console      */
 
 /* This is set if RB_SERIAL is passed by the FreeBSD bootblocks */
-int serial_console = 0;			/* set to 1 to use serial comsole, */
+#ifdef USE_SERIAL
+int serial_console = 1;			/* set to 1 to use serial comsole, */
+#else
+int serial_console = 0;
+#endif
 					/*   0 to use keyboard */
 /* This is set by giving "-d" to the FreeBSD bootblocks */
 int enable_gdb = 0;			/* set to 1 for kernel debugging */
@@ -72,8 +76,10 @@ our_exit(int rc)
 {
 	extern oskit_addr_t return_address;
 
+#if 0
 	printf("_exit(%d) called; %s...\r\n",
 	       rc, return_address ? "returning to netboot" : "rebooting");
+#endif
 
 	if (enable_gdb) {
 		/* Detach from the remote GDB. */
@@ -90,8 +96,9 @@ our_exit(int rc)
 	oskit_stream_release(console);
 	if (!serial_console) {
 		/* This is so that the user has a chance to SEE the output */
-		printf("Press a key to reboot");
-		getchar();
+		//~ printf("Press a key to reboot");
+		//~ printf("hit dat shit yo.");
+		//~ getchar();
 	}
 
 	if (return_address) {

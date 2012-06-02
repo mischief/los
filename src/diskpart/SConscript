@@ -1,0 +1,13 @@
+import os.path
+Import(['env'])
+
+files = Glob('*.c')
+subdirs = []
+
+env.diskpart_objects = [ files ]
+
+SConscript([os.path.join(i, 'SConscript') for i in subdirs], exports = ['env'])
+
+env.oskit_diskpart = env.StaticLibrary('oskit_diskpart', env.diskpart_objects)
+
+env.Command('#lib/${SOURCE}', env.oskit_diskpart, Copy("$TARGET", "$SOURCE"))

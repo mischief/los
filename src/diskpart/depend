@@ -1,0 +1,76 @@
+#
+lookup_string_blkio.o: lookup_string_blkio.c ../oskit/types.h \
+ ../oskit/machine/types.h ../oskit/io/blkio.h ../oskit/com.h \
+ ../oskit/compiler.h ../oskit/config.h ../oskit/error.h \
+ ../oskit/diskpart/diskpart.h ../oskit/c/stdio.h ../oskit/io/absio.h
+#
+lookup_string.o: lookup_string.c ../oskit/c/sys/types.h ../oskit/types.h \
+ ../oskit/machine/types.h ../oskit/time.h ../oskit/compiler.h \
+ ../oskit/config.h ../oskit/c/stdio.h ../oskit/io/absio.h ../oskit/com.h \
+ ../oskit/error.h ../oskit/c/stdlib.h ../oskit/c/ctype.h \
+ ../oskit/diskpart/diskpart.h ../oskit/io/blkio.h
+#
+lookup_blkio.o: lookup_blkio.c ../oskit/types.h ../oskit/machine/types.h \
+ ../oskit/io/blkio.h ../oskit/com.h ../oskit/compiler.h ../oskit/config.h \
+ ../oskit/error.h ../oskit/diskpart/diskpart.h ../oskit/c/stdio.h \
+ ../oskit/io/absio.h
+#
+lookup.o: lookup.c ../oskit/c/sys/types.h ../oskit/types.h \
+ ../oskit/machine/types.h ../oskit/time.h ../oskit/compiler.h \
+ ../oskit/config.h ../oskit/c/stdio.h ../oskit/io/absio.h ../oskit/com.h \
+ ../oskit/error.h ../oskit/diskpart/diskpart.h ../oskit/io/blkio.h
+#
+find_pcbios.o: find_pcbios.c ../oskit/c/sys/types.h ../oskit/types.h \
+ ../oskit/machine/types.h ../oskit/time.h ../oskit/compiler.h \
+ ../oskit/config.h ../oskit/c/stdio.h ../oskit/io/absio.h ../oskit/com.h \
+ ../oskit/error.h ../oskit/diskpart/diskpart.h ../oskit/io/blkio.h \
+ ../oskit/diskpart/pcbios.h
+#
+dump.o: dump.c ../oskit/c/sys/types.h ../oskit/types.h \
+ ../oskit/machine/types.h ../oskit/time.h ../oskit/compiler.h \
+ ../oskit/config.h ../oskit/c/stdio.h ../oskit/io/absio.h ../oskit/com.h \
+ ../oskit/error.h ../oskit/c/ctype.h ../oskit/diskpart/diskpart.h \
+ ../oskit/io/blkio.h
+#
+find_dec.o: find_dec.c ../oskit/c/sys/types.h ../oskit/types.h \
+ ../oskit/machine/types.h ../oskit/time.h ../oskit/compiler.h \
+ ../oskit/config.h ../oskit/c/stdio.h ../oskit/io/absio.h ../oskit/com.h \
+ ../oskit/error.h ../oskit/diskpart/diskpart.h ../oskit/io/blkio.h \
+ ../oskit/diskpart/dec.h
+#
+fill.o: fill.c ../oskit/c/sys/types.h ../oskit/types.h \
+ ../oskit/machine/types.h ../oskit/time.h ../oskit/compiler.h \
+ ../oskit/config.h ../oskit/c/stdio.h ../oskit/io/absio.h ../oskit/com.h \
+ ../oskit/error.h ../oskit/diskpart/diskpart.h ../oskit/io/blkio.h
+#
+find_vtoc.o: find_vtoc.c ../oskit/c/sys/types.h ../oskit/types.h \
+ ../oskit/machine/types.h ../oskit/time.h ../oskit/compiler.h \
+ ../oskit/config.h ../oskit/c/stdio.h ../oskit/io/absio.h ../oskit/com.h \
+ ../oskit/error.h ../oskit/diskpart/diskpart.h ../oskit/io/blkio.h \
+ ../oskit/diskpart/vtoc.h
+#
+find.o: find.c ../oskit/c/sys/types.h ../oskit/types.h \
+ ../oskit/machine/types.h ../oskit/time.h ../oskit/compiler.h \
+ ../oskit/config.h ../oskit/c/stdio.h ../oskit/io/absio.h ../oskit/com.h \
+ ../oskit/error.h ../oskit/diskpart/diskpart.h ../oskit/io/blkio.h \
+ ../oskit/diskpart/pcbios.h
+#
+find_omron.o: find_omron.c ../oskit/c/sys/types.h ../oskit/types.h \
+ ../oskit/machine/types.h ../oskit/time.h ../oskit/compiler.h \
+ ../oskit/config.h ../oskit/c/stdio.h ../oskit/io/absio.h ../oskit/com.h \
+ ../oskit/error.h ../oskit/diskpart/diskpart.h ../oskit/io/blkio.h \
+ ../oskit/diskpart/omron.h
+#
+find_blkio.o: find_blkio.c ../oskit/types.h ../oskit/machine/types.h \
+ ../oskit/io/blkio.h ../oskit/com.h ../oskit/compiler.h ../oskit/config.h \
+ ../oskit/error.h ../oskit/diskpart/diskpart.h ../oskit/c/stdio.h \
+ ../oskit/io/absio.h ../oskit/c/string.h
+#
+find_disklabel.o: find_disklabel.c ../oskit/c/sys/types.h \
+ ../oskit/types.h ../oskit/machine/types.h ../oskit/time.h \
+ ../oskit/compiler.h ../oskit/config.h ../oskit/c/stdio.h \
+ ../oskit/io/absio.h ../oskit/com.h ../oskit/error.h \
+ ../oskit/diskpart/diskpart.h ../oskit/io/blkio.h \
+ ../oskit/diskpart/disklabel.h
+#
+#

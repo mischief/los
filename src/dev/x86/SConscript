@@ -1,0 +1,7 @@
+import os.path
+Import(['env'])
+
+files = Glob('*.c')
+subdirs = []
+
+env.dev_objects += files

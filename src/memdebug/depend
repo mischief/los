@@ -1,0 +1,60 @@
+#
+memdebug_printf.o: memdebug_printf.c ../oskit/c/stdarg.h \
+ ../oskit/machine/c/stdarg.h ../oskit/machine/types.h ../oskit/c/stdio.h \
+ ../oskit/types.h ../oskit/compiler.h ../oskit/config.h \
+ ../oskit/io/absio.h ../oskit/com.h ../oskit/error.h memdebug.h \
+ ../oskit/c/malloc.h
+#
+memdebug_bogosity.o: memdebug_bogosity.c memdebug.h ../oskit/c/malloc.h \
+ ../oskit/types.h ../oskit/machine/types.h ../oskit/compiler.h \
+ ../oskit/config.h
+#
+memdebug_ptrchk.o: memdebug_ptrchk.c memdebug.h ../oskit/c/malloc.h \
+ ../oskit/types.h ../oskit/machine/types.h ../oskit/compiler.h \
+ ../oskit/config.h
+#
+memdebug_getsize.o: memdebug_getsize.c ../oskit/c/assert.h \
+ ../oskit/compiler.h ../oskit/config.h ../oskit/c/string.h \
+ ../oskit/machine/types.h ../oskit/lmm.h memdebug.h ../oskit/c/malloc.h \
+ ../oskit/types.h
+#
+memdebug_backtrace.o: ../memdebug/x86/memdebug_backtrace.c memdebug.h \
+ ../oskit/c/malloc.h ../oskit/types.h ../oskit/machine/types.h \
+ ../oskit/compiler.h ../oskit/config.h
+#
+memdebug_mem.o: memdebug_mem.c ../oskit/c/environment.h \
+ ../oskit/com/services.h ../oskit/com.h ../oskit/types.h \
+ ../oskit/machine/types.h ../oskit/compiler.h ../oskit/config.h \
+ ../oskit/error.h ../oskit/com/libcenv.h ../oskit/com/stream.h \
+ ../oskit/io/ttystream.h ../oskit/fs/fsnamespace.h ../oskit/dev/dev.h \
+ ../oskit/dev/error.h ../oskit/machine/dev.h ../oskit/x86/pc/dev.h \
+ ../oskit/dev/osenv.h ../oskit/io/blkio.h ../oskit/com/mem.h
+#
+memdebug_wrap.o: memdebug_wrap.c memdebug.h ../oskit/c/malloc.h \
+ ../oskit/types.h ../oskit/machine/types.h ../oskit/compiler.h \
+ ../oskit/config.h ../oskit/c/string.h
+#
+memdebug_alloc.o: memdebug_alloc.c ../oskit/c/assert.h \
+ ../oskit/compiler.h ../oskit/config.h ../oskit/c/string.h \
+ ../oskit/machine/types.h ../oskit/lmm.h memdebug.h ../oskit/c/malloc.h \
+ ../oskit/types.h
+#
+memdebug_free.o: memdebug_free.c ../oskit/c/assert.h ../oskit/compiler.h \
+ ../oskit/config.h ../oskit/c/string.h ../oskit/machine/types.h \
+ ../oskit/lmm.h memdebug.h ../oskit/c/malloc.h ../oskit/types.h
+#
+memdebug_info_dump.o: memdebug_info_dump.c memdebug.h ../oskit/c/malloc.h \
+ ../oskit/types.h ../oskit/machine/types.h ../oskit/compiler.h \
+ ../oskit/config.h
+#
+memdebug_mark.o: memdebug_mark.c ../oskit/c/stdio.h ../oskit/types.h \
+ ../oskit/machine/types.h ../oskit/compiler.h ../oskit/config.h \
+ ../oskit/io/absio.h ../oskit/com.h ../oskit/error.h memdebug.h \
+ ../oskit/c/malloc.h
+#
+memdebug_sweep.o: memdebug_sweep.c ../oskit/c/stdio.h ../oskit/types.h \
+ ../oskit/machine/types.h ../oskit/compiler.h ../oskit/config.h \
+ ../oskit/io/absio.h ../oskit/com.h ../oskit/error.h memdebug.h \
+ ../oskit/c/malloc.h
+#
+#

@@ -39,8 +39,9 @@
  * Would probably be best just to avoid using this if possible.
  */
 #ifndef OSKIT_INLINE
-//~ #define OSKIT_INLINE	extern __inline__
-#define OSKIT_INLINE	__inline__
+//#define OSKIT_INLINE   __inline__
+//#define OSKIT_INLINE	extern __inline__
+#define OSKIT_INLINE	static __inline__
 #endif
 
 /*

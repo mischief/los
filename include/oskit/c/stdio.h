@@ -19,6 +19,7 @@
 
 #include <oskit/types.h>
 #include <oskit/compiler.h>
+#include <oskit/c/errno.h>
 
 /* This is a very naive standard I/O implementation
    which simply chains to the low-level I/O routines
@@ -107,6 +108,8 @@ extern FILE __sF[];
 #ifndef BUFSIZ
 #define BUFSIZ	1024
 #endif
+
+OSKIT_INLINE FILE *tmpfile(void) { errno = ENOSYS; return (FILE *) NULL; }
 
 OSKIT_BEGIN_DECLS
 

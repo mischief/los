@@ -11,7 +11,8 @@ warnflags = ""
 #~ warnflags += " -Wfloat-equal -Wformat -Wformat=2 "
 #~ warnflags += " -Wno-format-extra-args -Wformat-nonliteral -Wformat-security -Wformat-y2k -Wimplicit "
 #~ warnflags += " -Wimport -Wno-import -Winit-self "
-#~ warnflags += " -Winline -Winvalid-pch -Wlong-long -Wmissing-braces "
+#~ warnflags += " -Winvalid-pch -Wlong-long -Wmissing-braces "
+warnflags += " -Winline "
 #~ warnflags += " -Wmissing-field-initializers -Wmissing-format-attribute "
 #~ warnflags += " -Wno-multichar -Wpacked -Wparentheses " # -Wmissing-noreturn
 #~ warnflags += " -Wpointer-arith -Wredundant-decls -Wreturn-type -Wsequence-point -Wshadow -Wsign-compare "
@@ -28,14 +29,16 @@ opts.AddVariables(
     ('CXX', 'Set the C++ compiler name'),
     ('AS', 'Set the assembler name'),
     ('LINK', 'Set the linker name'),
-    ('CFLAGS', 'Set the C compiler flags', warnflags+cwarnflags+'-nostdinc -ffreestanding -std=c99'),
+#    ('CFLAGS', 'Set the C compiler flags', warnflags+cwarnflags+'-nostdinc -ffreestanding -pipe'),
+    ('CFLAGS', 'Set the C compiler flags', warnflags+cwarnflags+'-nostdinc -ffreestanding -std=c99 -pipe'),
     #~ ('CXXFLAGS', 'Set the C++ compiler flags', warnflags+' -nostdlib -fno-builtin -nostartfiles -nodefaultlibs -fno-exceptions -fno-rtti -fno-stack-protector'),
     ('ASFLAGS', 'Set the assembler flags', warnflags+cwarnflags+'-nostdlib -ffreestanding'),
     ('LINKFLAGS', 'Set the linker flags', '-nostdlib'),
     EnumVariable('optimization', 'Set optimization level. s 0 1 2 or 3', '1', allowed_values=('s','0','1','2','3')),
-    ('BUILDDIR', 'Set the sub-directory to put object files in', 'build'),
+    ('BUILDDIR', 'Set the sub-directory to put object files in', '.build'),
     BoolVariable('verbose', 'Show full commands during the build process', False),
     ('arch', 'Set the target architecture', 'x86'),
+    ('serial', 'Set to use serial port 1 for stdio', False),
     BoolVariable('debug', 'Enable debugging symbols', False),
 )
 
@@ -44,8 +47,12 @@ Help(opts.GenerateHelpText(env))
 opts.Save('scache.conf', env)
 
 env.Append(CFLAGS = ' -O' + env['optimization'])
+#if env['optimization'] == 0:
+#  env.Append(CFLAGS = ' -fkeep-inline-functions ')
+
+
 env.Append(ASFLAGS = ' -DASSEMBLER ')
-env.Append(CPPPATH = '#/include')
+env.Append(CPPPATH = ['#/include', '#/src'])
 
 # Link the current arch's include dir to oskit/machine
 
@@ -66,9 +73,13 @@ env.BuildLink(archinclude, archdir)
 
 
 if env['debug'] == 1:
-  env['CFLAGS'] += " -g "
+  env['CFLAGS'] += " -g -O0 -fkeep-inline-functions -finline-functions "
+#  env['CFLAGS'] += " -g -O0 "
   env['CXXFLAGS'] += " -g "
   env.Append(CPPDEFINES = "DEBUG")
+
+if env['serial'] == 1:
+  env['CPPFLAGS'] += " -DUSE_SERIAL "
 
 if env['verbose'] != 1:
   env['ARCOMSTR'] = "$AR\t $TARGET"

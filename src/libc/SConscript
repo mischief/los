@@ -2,14 +2,14 @@ import os.path
 Import(['env'])
 
 files = Glob('*.c')
-subdirs = [ 'stdlib', 'stdio', 'string', 'malloc', 'gmon', 'net', 'gen', env['arch'] ]
+subdirs = [ 'stdlib', 'stdio', 'string', 'malloc', 'math', 'gmon', 'net', 'gen', env['arch'] ]
 
 env.libc_objects = [ files ]
 
-env.Append(CPPFLAGS = ' -Iinclude/oskit/c -Isrc')
+#env.Append(CPPFLAGS = ' -Iinclude/oskit/c -Isrc')
 
 SConscript([os.path.join(i, 'SConscript') for i in subdirs], exports = ['env'])
 
-env.oskit_c = env.StaticLibrary('oskit_c', env.libc_objects)
+env.oskit_c = env.StaticLibrary('oskit_c', env.libc_objects, CPPFLAGS = ' -Iinclude/oskit/c -Isrc')
 
 env.Command('#lib/${SOURCE}', env.oskit_c, Copy("$TARGET", "$SOURCE"))

@@ -1,0 +1,17 @@
+import os.path
+Import(['env'])
+
+files = Glob('*.c')
+subdirs = [ env['arch'] ]
+
+env.memdebug_objects = []
+
+env.memdebug_objects += files
+
+env.Append(CPPFLAGS = ' -Iinclude/oskit/c -Isrc/memdebug ')
+
+SConscript([os.path.join(i, 'SConscript') for i in subdirs], exports = ['env'])
+
+env.oskit_memdebug = env.StaticLibrary('oskit_memdebug', env.memdebug_objects)
+
+env.Command('#lib/${SOURCE}', env.oskit_memdebug, Copy("$TARGET", "$SOURCE"))

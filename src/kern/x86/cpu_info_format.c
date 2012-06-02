@@ -253,6 +253,10 @@ void cpu_info_format(
 		case 0x0c: s = "Data cache: 16K bytes, "
 				"2-way set associative, 32 byte line size";
 				break;
+    case 0x2c: s = "1st-level D-cache: 32K Bytes, 8-way associative, 64 byte line size";
+        break;
+    case 0x30: s = "1st-level I-cache: 32K Bytes, 8-way associative, 64 byte line size";
+        break;
 		case 0x40: s = "No L2 cache";
 				break;
 		case 0x41: s = "Unified cache: 128K bytes, "
@@ -270,8 +274,11 @@ void cpu_info_format(
 		case 0x45: s = "Unified cache: 2048K bytes, "
 				"4-way set associative, 32 byte line size";
 				break;
-	        case 0x82: s = "Unified cache: 256K bytes, "
-			        "8-way set associative, 32 byte line size";
+    case 0x7d: s = "L2 Cache: 2048K bytes, 8-way associative, 64 byte line size";
+        break;
+    case 0x82: s = "Unified cache: 256K bytes, "
+			  "8-way set associative, 32 byte line size";
+        break;
 		default:
 			sprintf(sbuf, "(unknown cache/TLB descriptor 0x%02x)",
 				id->cache_config[i]);

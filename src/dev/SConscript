@@ -1,0 +1,16 @@
+import os.path
+Import(['env'])
+
+files = Glob('*.c')
+subdirs = [ env['arch'] ]
+
+env.dev_objects = []
+env.dev_objects += files
+
+env.Append(CPPFLAGS = ' -Isrc/dev/x86 ')
+
+SConscript([os.path.join(i, 'SConscript') for i in subdirs], exports = ['env'])
+
+env.oskit_dev = env.StaticLibrary('oskit_dev', env.dev_objects)
+
+env.Command('#lib/${SOURCE}', env.oskit_dev, Copy("$TARGET", "$SOURCE"))

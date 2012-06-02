@@ -1,0 +1,38 @@
+import os.path
+Import(['env'])
+
+files = Glob('*.c')
+subdirs = []
+
+SConscript([os.path.join(i, 'SConscript') for i in subdirs], exports = ['env'])
+
+files = [env.multiboot] + files
+
+
+hello = env.Program('hello',
+ files, 
+ LIBPATH='#/lib',
+ LIBS=[
+	'oskit_c',
+	'oskit_clientos',
+	'oskit_kern',
+	'oskit_lmm',
+	'oskit_com',
+	'oskit_posix',
+	'oskit_dev',
+  'oskit_lua',
+	],
+ LINKFLAGS = env['LINKFLAGS'] + ' -T'+os.path.join(Dir('..').srcnode().path, 'src/link.ld'),
+# LINKCOM = '$LINK -o $TARGET $LINKFLAGS $SOURCES $_LIBDIRFLAGS $_LIBFLAGS'
+ LINKCOM = '$LINK -o $TARGET $LINKFLAGS $SOURCES $_LIBDIRFLAGS --start-group $_LIBFLAGS --end-group'
+)
+
+Depends(hello, '#lib/liboskit_c.a')
+Depends(hello, '#lib/liboskit_clientos.a')
+Depends(hello, '#lib/liboskit_kern.a')
+Depends(hello, '#lib/liboskit_lmm.a')
+Depends(hello, '#lib/liboskit_com.a')
+Depends(hello, '#lib/liboskit_posix.a')
+Depends(hello, '#lib/liboskit_lua.a')
+
+env.Command('#/kernel', hello, Copy("$TARGET", "$SOURCE"))

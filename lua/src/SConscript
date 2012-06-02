@@ -1,0 +1,17 @@
+import os.path
+Import(['env'])
+
+files = [ 'lapi.c', 'lauxlib.c', 'lbaselib.c', 'lcode.c', 'ldebug.c', 'ldo.c',
+  'ldump.c', 'lfunc.c', 'lgc.c', 'linit.c', 'llex.c', 'lmem.c', 'lobject.c',
+  'lopcodes.c', 'lparser.c', 'lstate.c', 'lctype.c', 'lstring.c', 'lstrlib.c', 'liolib.c',
+  'ltable.c', 'ltablib.c', 'ltm.c', 'lundump.c', 'lvm.c', 'lzio.c',   ]
+
+env.lua_objects = []
+
+env.lua_objects += files
+
+env.Append(CPPFLAGS = ' -DLUA_ANSI -Iinclude/oskit/c -Ilua/src ')
+
+env.oskit_lua = env.StaticLibrary('oskit_lua', env.lua_objects)
+
+env.Command('#lib/${SOURCE}', env.oskit_lua, Copy("$TARGET", "$SOURCE"))

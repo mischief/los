@@ -29,6 +29,9 @@ typedef oskit_size_t size_t;
 #define NULL 0
 #endif
 
+#define EXIT_SUCCESS 0
+#define EXIT_FAILURE 1
+
 #define RAND_MAX 0x7fffffff
 
 #define MB_CUR_MAX	1	/* We don't do locales, so it's always 1. */
