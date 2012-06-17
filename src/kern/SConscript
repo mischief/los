@@ -5,13 +5,9 @@ files = Glob('*.c')
 subdirs = [ env['arch'] ]
 
 env.kern_objects = []
-
 env.kern_objects += files
-
-env.Append(CPPFLAGS = '-Iinclude/oskit/c')
 
 SConscript([os.path.join(i, 'SConscript') for i in subdirs], exports = ['env'])
 
 env.oskit_kern = env.StaticLibrary('oskit_kern', env.kern_objects)
-
 env.Command('#lib/${SOURCE}', env.oskit_kern, Copy("$TARGET", "$SOURCE"))

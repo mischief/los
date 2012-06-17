@@ -4,10 +4,10 @@ import platform
 opts = Variables('scache.conf')
 
 warnflags = ""
-#~ warnflags += " -Wall -Wextra -Wundef -Wredundant-decls " # -Wmissing-declarations
+warnflags += " -Wall -Wextra -Wundef -Wredundant-decls " # -Wmissing-declarations
 #~ warnflags += " -Wlong-long -Wfloat-equal "
-#~ warnflags += " -Waggregate-return -Wcast-align -Wcast-qual -Wchar-subscripts -Wcomment " #-Wconversion "
-#~ warnflags += " -Wno-deprecated-declarations -Wdisabled-optimization -Wno-div-by-zero -Wno-endif-labels "
+warnflags += " -Waggregate-return -Wcast-align -Wcast-qual -Wchar-subscripts -Wcomment " #-Wconversion "
+warnflags += " -Wno-deprecated-declarations -Wdisabled-optimization -Wno-div-by-zero -Wno-endif-labels "
 #~ warnflags += " -Wfloat-equal -Wformat -Wformat=2 "
 #~ warnflags += " -Wno-format-extra-args -Wformat-nonliteral -Wformat-security -Wformat-y2k -Wimplicit "
 #~ warnflags += " -Wimport -Wno-import -Winit-self "
@@ -47,22 +47,18 @@ Help(opts.GenerateHelpText(env))
 opts.Save('scache.conf', env)
 
 env.Append(CFLAGS = ' -O' + env['optimization'])
-#if env['optimization'] == 0:
-#  env.Append(CFLAGS = ' -fkeep-inline-functions ')
-
-
 env.Append(ASFLAGS = ' -DASSEMBLER ')
 env.Append(CPPPATH = ['#/include', '#/src'])
 
 # Link the current arch's include dir to oskit/machine
 
 def buildlink(env, name, target):
-    """Links target to name"""
-    import shlex, subprocess
-    command = 'ln -f -n -s %s %s' % (target, name)
-    print command
-    subprocess.Popen(shlex.split(command))
-    return None
+  """Links target to name"""
+  import shlex, subprocess
+  command = 'ln -f -n -s %s %s' % (target, name)
+  print command
+  subprocess.Popen(shlex.split(command))
+  return None
 
 env.AddMethod(buildlink, "BuildLink")
 
@@ -71,17 +67,14 @@ archdir = env['arch']
 
 env.BuildLink(archinclude, archdir)
 
+if env['debug']:
+  env.MergeFlags('-g -O0 -fkeep-inline-functions -finline-functions')
+  env.MergeFlags('-DDEBUG')
 
-if env['debug'] == 1:
-  env['CFLAGS'] += " -g -O0 -fkeep-inline-functions -finline-functions "
-#  env['CFLAGS'] += " -g -O0 "
-  env['CXXFLAGS'] += " -g "
-  env.Append(CPPDEFINES = "DEBUG")
+if env['serial']:
+  env.MergeFlags('-DUSE_SERIAL')
 
-if env['serial'] == 1:
-  env['CPPFLAGS'] += " -DUSE_SERIAL "
-
-if env['verbose'] != 1:
+if not env['verbose']:
   env['ARCOMSTR'] = "$AR\t $TARGET"
   env['ASCOMSTR'] = "$AS\t $TARGET"
   env['ASPPCOMSTR'] = "$AS\t $TARGET"

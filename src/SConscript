@@ -1,16 +1,15 @@
 import os.path
 Import(['env'])
 
-# , 'com'
 subdirs = [
 'crt', 'kern', 'lmm',
 'clientos', 'libc',
 'posix',
 'com',
 'dev',
-#'linux',
 'diskpart',
-'memdebug'
+'memdebug',
+#'linux'
 ]
 
 Mkdir("#lib")

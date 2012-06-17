@@ -10,7 +10,7 @@ env.lua_objects = []
 
 env.lua_objects += files
 
-env.Append(CPPFLAGS = ' -DLUA_ANSI -Iinclude/oskit/c -Ilua/src ')
+env.Append(CPPPATH = ['#/include/oskit/c', '#/lua/src'], CPPDEFINES = '-DLUA_ANSI')
 
 env.oskit_lua = env.StaticLibrary('oskit_lua', env.lua_objects)
 

@@ -1,6 +1,14 @@
 import os.path
 Import(['env'])
 
-subdirs = ['sys']
+files = Glob('*.c')
+subdirs = []
+
+env.linux_dev_objects = []
+env.linux_dev_objects += files
 
 SConscript([os.path.join(i, 'SConscript') for i in subdirs], exports = ['env'])
+
+env.oskit_linux_dev = env.StaticLibrary('oskit_linux_dev', env.linux_dev_objects + env.linux_shared_objects)
+
+env.Command('#/lib/${SOURCE}', env.oskit_linux_dev, Copy("$TARGET", "$SOURCE"))

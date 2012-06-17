@@ -1,0 +1,6 @@
+import os.path
+Import(['env'])
+
+files = [ Glob('*.c') ]
+subdirs = []
+env.linux_shared_objects += files

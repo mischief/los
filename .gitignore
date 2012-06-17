@@ -1,0 +1,17 @@
+# Object files
+*.o
+
+# Libraries
+*.lib
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+
+# Executables
+*.exe
+*.out
+
+# Scons stuff
+scache.conf
+.sconsign.dblite

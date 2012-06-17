@@ -5,6 +5,7 @@
 #include <oskit/startup.h>
 #include <oskit/version.h>
 #include <oskit/x86/cpuid.h>
+#include <oskit/x86/pc/base_multiboot.h>
 
 #include "lua.h"
 #include "lauxlib.h"
@@ -59,8 +60,11 @@ static int lua_cpuid (lua_State *L) {
   return 1;
 }
 
-int main()
-{
+int main(int argc, char **argv) {
+
+  extern char **environ;
+  unsigned i = 0;
+
 #ifndef KNIT
 	oskit_clientos_init();
 #endif
@@ -68,8 +72,19 @@ int main()
 	start_fs_bmod();
 	start_gprof();
 #endif
+
   printf("Lua OS v0.0.1, with OSKit v%s.\n", _OSKIT_VERSION_STRING);
 	printf("Type exit() to shutdown.\n");
+
+  printf("\nI was given this command line, environment, and bootopts:\n");
+  for (i = 0; i < argc; i++)
+    printf("  argv[%d]: `%s'\n", i, argv[i]);
+  for (i = 0; environ[i]; i++)
+    printf("  environ[%d]: `%s'\n", i, environ[i]);
+  for (i = 0; i < oskit_bootargc; i++)
+    printf("  oskit_bootargv[%d]: `%s'\n", i, oskit_bootargv[i]);
+
+  multiboot_info_dump(&boot_info);
 
   int error;
   lua_State *L = luaL_newstate(); /* opens Lua */
