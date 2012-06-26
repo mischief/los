@@ -1,0 +1,33 @@
+import os.path
+Import(['env'])
+
+oldenv = env
+
+env = env.Clone()
+
+env.VariantDir('linux-fs-shared', '../shared', duplicate=0)
+
+files = Glob('#/src/linux/src/fs/*.c') + Glob('#/src/linux/src/fs/[!v]*/*.c') + Glob('linux-fs-shared/*.c')
+subdirs = []
+
+env.linux_fs_objects = []
+env.linux_fs_objects += files
+
+env.Append(CPPPATH = ['#/src/linux/shared', '#/src/linux/src/include'])
+
+env.MergeFlags(['-include #/src/linux/dev/global.h'])
+env.Append(CPPDEFINES = 
+  ['-DOSKIT',
+   '-DOSKIT_FS',
+   '-D__KERNEL__',])
+
+if env['debug']:
+  env.MergeFlags(' -UDEBUG -DOSKIT_DEBUG ')
+
+SConscript([os.path.join(i, 'SConscript') for i in subdirs], exports = ['env'])
+
+env.oskit_linux_fs = env.StaticLibrary('oskit_linux_fs', env.linux_fs_objects)
+
+env.Command('#/lib/${SOURCE}', env.oskit_linux_fs, Copy("$TARGET", "$SOURCE"))
+
+env = oldenv

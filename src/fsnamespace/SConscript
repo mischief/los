@@ -1,0 +1,21 @@
+import os.path
+Import(['env'])
+
+oldenv = env
+
+env = env.Clone()
+
+files = Glob('src/*.c')
+subdirs = []
+
+env.fsnamespace_objects = []
+env.fsnamespace_objects += files
+
+env.Append(CPPPATH = '#/include/oskit/c')
+
+SConscript([os.path.join(i, 'SConscript') for i in subdirs], exports = ['env'])
+
+env.oskit_fsnamespace = env.StaticLibrary('oskit_fsnamespace', env.fsnamespace_objects)
+env.Command('#lib/${SOURCE}', env.oskit_fsnamespace, Copy("$TARGET", "$SOURCE"))
+
+env = oldenv
