@@ -1,6 +1,10 @@
 import os.path
 Import(['env'])
 
+oldenv = env
+
+env = env.Clone()
+
 files = Glob('*.c')
 subdirs = [ env['arch'] ]
 
@@ -13,3 +17,5 @@ SConscript([os.path.join(i, 'SConscript') for i in subdirs], exports = ['env'])
 
 env.oskit_memdebug = env.StaticLibrary('oskit_memdebug', env.memdebug_objects)
 env.Command('#lib/${SOURCE}', env.oskit_memdebug, Copy("$TARGET", "$SOURCE"))
+
+env = oldenv

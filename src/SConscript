@@ -8,8 +8,9 @@ subdirs = [
 'com',
 'dev',
 'diskpart',
+'fsnamespace',
 'memdebug',
-#'linux'
+'linux'
 ]
 
 Mkdir("#lib")

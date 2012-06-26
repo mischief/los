@@ -13,6 +13,18 @@
 
 #include <assert.h>
 
+#include <oskit/dev/dev.h>
+#include <oskit/dev/linux.h>
+#include <oskit/io/blkio.h>
+#include <oskit/diskpart/diskpart.h>
+#include <oskit/c/stdio.h>
+#include <oskit/c/string.h>
+//#include <oskit/clientos.h>
+//#include <oskit/startup.h>
+
+#define MAX_PARTS 30
+diskpart_t part_array[MAX_PARTS];
+
 extern struct cpu_info base_cpuid;
 
 static int os_exit (lua_State *L) {
@@ -67,10 +79,52 @@ int main(int argc, char **argv) {
 
 #ifndef KNIT
 	oskit_clientos_init();
+  start_blk_devices();
 #endif
 #ifdef  GPROF
 	start_fs_bmod();
 	start_gprof();
+#endif
+
+
+#if 1
+
+  oskit_blkio_t *b;
+  oskit_error_t err;
+  int numparts;
+  char name[10];
+
+ for (;;) {    printf("What disk do you want to check?"
+           " (eg, \"sd0\", \"quit\" to exit): ");  gets(name);
+    if (*name == '\0')      continue;
+    if (strcmp(name, "quit") == 0)
+      break;
+
+    printf("\nGetting partition info for %s\n", name);
+    /* Open the disk. */    err = oskit_linux_block_open(name, OSKIT_DEV_OPEN_READ, &b);    switch (err) {    case 0:      break;
+    case OSKIT_E_DEV_NOSUCH_DEV:
+      printf("disk %s does not exist!\n", name);
+      continue;    default:      printf("error %x opening disk %s\n", err, name);      continue;
+    }
+    /*     * Get the partition info and dump it out.
+     * Another way to do this is by using diskpart_get_partition,
+     * which takes a callback function.
+     * That is, in fact, what diskpart_blkio_get_partition ends
+     * up calling.
+     */
+    numparts = diskpart_blkio_get_partition(b, part_array,
+              MAX_PARTS);
+    if (numparts == 0) {
+      printf("No partitions found\n");
+      continue;
+    }
+    printf("%d partitions found\n", numparts);
+    diskpart_dump(part_array, 0, 'a');
+
+    /* Close the disk. */
+    oskit_blkio_release(b);
+  }
+
 #endif
 
   printf("Lua OS v0.0.1, with OSKit v%s.\n", _OSKIT_VERSION_STRING);

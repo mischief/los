@@ -30,7 +30,7 @@ void panic(const char *fmt, ...)
 
         va_start(args, fmt);
         osenv_vpanic(fmt, args);
-        va_end(vl);
+        va_end(args);
 #ifndef KNIT
         /* This is here to suppress the noreturn warning */
 	exit(1);

@@ -1,14 +1,33 @@
 import os.path
 Import(['env'])
 
-files = Glob('*.c')
+oldenv = env
+
+env = env.Clone()
+
+env.VariantDir('linux-dev-shared', '../shared', duplicate=0)
+
+files = Glob('*.c') + Glob('linux-dev-shared/*.c') + Glob('linux-dev-shared/libc/*.c') + Glob('linux-dev-shared/x86/*.c')
 subdirs = []
+
+#shared = env.Object('oskit_linux_shared', [env.ah)
 
 env.linux_dev_objects = []
 env.linux_dev_objects += files
 
+env.MergeFlags(['-include #/src/linux/dev/global.h'])
+env.Append(CPPPATH = ['#/src/linux/shared', '#/src/linux/src/include', '#/src/linux/src/drivers/scsi'], CPPDEFINES = 
+  ['-DOSKIT',
+#   '-DOSKIT_FS',
+   '-DOSKIT_DEV',
+   '-D__KERNEL__',
+   '-DCONFIG_PROC_FS'])
+
 SConscript([os.path.join(i, 'SConscript') for i in subdirs], exports = ['env'])
 
-env.oskit_linux_dev = env.StaticLibrary('oskit_linux_dev', env.linux_dev_objects + env.linux_shared_objects)
+env.oskit_linux_dev = env.StaticLibrary('oskit_linux_dev', env.linux_dev_objects)
 
 env.Command('#/lib/${SOURCE}', env.oskit_linux_dev, Copy("$TARGET", "$SOURCE"))
+
+env = oldenv
+

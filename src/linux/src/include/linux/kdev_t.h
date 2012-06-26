@@ -1,6 +1,7 @@
 #ifndef _LINUX_KDEV_T_H
 #define _LINUX_KDEV_T_H
-#ifdef __KERNEL__
+#if 1
+//#ifdef __KERNEL__
 /*
 As a preparation for the introduction of larger device numbers,
 we introduce a type kdev_t to hold them. No information about

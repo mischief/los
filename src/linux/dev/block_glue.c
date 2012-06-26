@@ -531,25 +531,24 @@ ll_rw_block(int rw, int nr, struct buffer_head **bh)
  * People changing diskettes in the middle of an operation deserve
  * to loose :-)
  */
-int
-check_disk_change(kdev_t dev)
+int check_disk_change(kdev_t dev)
 {
 	unsigned i;
 	struct file_operations *fops;
 
 	i = MAJOR(dev);
 	if (i >= MAX_BLKDEV || (fops = blkdevs[i].fops) == NULL)
-		return (0);
+		return 0;
 	if (fops->check_media_change == NULL)
-		return (0);
+		return 0;
 	if (!(*fops->check_media_change)(dev))
-		return (0);
+		return 0;
 	osenv_log(OSENV_LOG_NOTICE, "Disk change detected on device %s\n",
 		kdevname(dev));
 	if (fops->revalidate)
 		(*fops->revalidate)(dev);
 
-	return (1);
+	return 1;
 }
 
 #undef  NR_REQUEST

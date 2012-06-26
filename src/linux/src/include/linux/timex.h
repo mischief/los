@@ -175,6 +175,7 @@ struct timex {
 	int  :32; int  :32; int  :32; int  :32;
 	int  :32; int  :32; int  :32; int  :32;
 	int  :32; int  :32; int  :32; int  :32;
+
 };
 
 /*

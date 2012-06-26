@@ -1,6 +1,7 @@
 #ifndef _LINUX_BLKDEV_H
 #define _LINUX_BLKDEV_H
 
+#include <linux/kdev_t.h>
 #include <linux/major.h>
 #include <linux/sched.h>
 #include <linux/genhd.h>

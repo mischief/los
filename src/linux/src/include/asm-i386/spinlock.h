@@ -3,7 +3,7 @@
 
 #ifndef __SMP__
 
-#define DEBUG_SPINLOCKS	0	/* 0 == no debugging, 1 == maintain lock state, 2 == full debug */
+#define DEBUG_SPINLOCKS	2	/* 0 == no debugging, 1 == maintain lock state, 2 == full debug */
 
 #if (DEBUG_SPINLOCKS < 1)
 
@@ -12,7 +12,8 @@
  *
  * Gcc-2.7.x has a nasty bug with empty initializers.
  */
-#if (__GNUC__ > 2) || (__GNUC__ == 2 && __GNUC_MINOR__ >= 8)
+//#if (__GNUC__ > 2) || (__GNUC__ == 2 && __GNUC_MINOR__ >= 8)
+#if 0
   typedef struct { } spinlock_t;
   #define SPIN_LOCK_UNLOCKED (spinlock_t) { }
 #else
@@ -61,7 +62,8 @@ typedef struct {
 	volatile unsigned int babble;
 	const char *module;
 } spinlock_t;
-#define SPIN_LOCK_UNLOCKED (spinlock_t) { 0, 25, __BASE_FILE__ }
+//#define SPIN_LOCK_UNLOCKED (spinlock_t) { 0, 25, __BASE_FILE__ }
+#define SPIN_LOCK_UNLOCKED { 0, 25, __BASE_FILE__ }
 
 #include <linux/kernel.h>
 

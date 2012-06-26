@@ -1,13 +1,19 @@
 import os.path
 Import(['env'])
 
+oldenv = env
+env = env.Clone()
+
 #files = Glob('*.c')
 files = ['lua.c']
 subdirs = []
 
+env.Append(CPPPATH = ['#/lua/src'])
+
 SConscript([os.path.join(i, 'SConscript') for i in subdirs], exports = ['env'])
 
-files = [env.multiboot] + files
+#files = [env.multiboot] + files
+files = ['#/lib/multiboot.o'] + files
 
 hello = env.Program('hello',
  files, 
@@ -23,7 +29,9 @@ hello = env.Program('hello',
   'oskit_lua',
   'oskit_diskpart',
   'oskit_memdebug',
-#  'oskit_linux_dev'
+  'oskit_fsnamespace',
+  'oskit_linux_dev',
+  'oskit_linux_fs'
 	],
  LINKFLAGS = env['LINKFLAGS'] + ' -T'+os.path.join(Dir('..').srcnode().path, 'src/link.ld'),
 # LINKCOM = '$LINK -o $TARGET $LINKFLAGS $SOURCES $_LIBDIRFLAGS $_LIBFLAGS'
@@ -39,7 +47,11 @@ Depends(hello, '#lib/liboskit_posix.a')
 Depends(hello, '#lib/liboskit_diskpart.a')
 Depends(hello, '#lib/liboskit_memdebug.a')
 Depends(hello, '#lib/liboskit_dev.a')
-#Depends(hello, '#lib/liboskit_linux_dev.a')
+Depends(hello, '#lib/liboskit_fsnamespace.a')
+Depends(hello, '#lib/liboskit_linux_dev.a')
+Depends(hello, '#lib/liboskit_linux_fs.a')
 Depends(hello, '#lib/liboskit_lua.a')
 
 env.Command('#/kernel', hello, Copy("$TARGET", "$SOURCE"))
+
+env = oldenv

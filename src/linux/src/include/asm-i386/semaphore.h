@@ -38,7 +38,8 @@ struct semaphore {
 	struct wait_queue * wait;
 };
 
-#define MUTEX ((struct semaphore) { ATOMIC_INIT(1), 0, NULL })
+//#define MUTEX ((struct semaphore) { ATOMIC_INIT(1), 0, NULL })
+#define MUTEX { ATOMIC_INIT(1), 0, NULL }
 #define MUTEX_LOCKED ((struct semaphore) { ATOMIC_INIT(0), 0, NULL })
 
 asmlinkage void __down_failed(void /* special register calling convention */);

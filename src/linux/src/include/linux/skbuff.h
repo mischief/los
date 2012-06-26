@@ -563,6 +563,7 @@ extern __inline__ void skb_queue_purge(struct sk_buff_head *list)
 		kfree_skb(skb);
 }
 
+/*
 extern __inline__ struct sk_buff *dev_alloc_skb(unsigned int length)
 {
 	struct sk_buff *skb;
@@ -572,6 +573,7 @@ extern __inline__ struct sk_buff *dev_alloc_skb(unsigned int length)
 		skb_reserve(skb,16);
 	return skb;
 }
+*/
 
 extern __inline__ struct sk_buff *
 skb_cow(struct sk_buff *skb, unsigned int headroom)

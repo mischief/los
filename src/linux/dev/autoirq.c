@@ -46,11 +46,11 @@
  *  the serial driver.
  */
 
+#include <asm/types.h>
 #include <linux/sched.h>		/* jiffies */
 
 #include <asm/bitops.h>			/* set_bit */
 #include <asm/irq.h>			/* disable_irq */
-
 /*
  * Set of fixed IRQs
  * (fpu, rtc, com1, PIC slave cascade, keyboard, timer).
@@ -72,8 +72,7 @@ extern unsigned long loops_per_sec;
  * Interrupt handler when probing an IRQ.
  */
 static void
-autoirq_probe(irq)
-	int irq;
+autoirq_probe(int irq)
 {
 	/*
 	 * Mark this IRQ as the last one
@@ -88,8 +87,7 @@ autoirq_probe(irq)
  * Set up for auto-irq.
  */
 int
-autoirq_setup(waittime)
-	int waittime;
+autoirq_setup(int waittime)
 {
 	int i, mask;
 #if 0
@@ -137,8 +135,7 @@ autoirq_setup(waittime)
  * Return the last IRQ that caused an interrupt.
  */
 int
-autoirq_report(waittime)
-	int waittime;
+autoirq_report(int waittime)
 {
 	int i;
 	int timeout = jiffies + waittime;

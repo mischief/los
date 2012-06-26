@@ -7,8 +7,6 @@ subdirs = [ env['arch'], 'libc' ]
 env.linux_shared_objects = []
 env.linux_shared_objects += files
 
-env.Append(CPPPATH = ['#/src/linux/shared', '#/src/linux/src/include'])
-
 SConscript([os.path.join(i, 'SConscript') for i in subdirs], exports = ['env'])
 
 #env.oskit_dev = env.StaticLibrary('oskit_dev', env.dev_objects)

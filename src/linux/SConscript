@@ -3,6 +3,6 @@ import os.path
 Import(['env'])
 
 #subdirs = [ 'src', 'shared', 'dev', 'fs' ]
-subdirs = [ 'shared', 'dev' ]
+subdirs = [ 'shared', 'dev', 'fs' ]
 
 SConscript([os.path.join(i, 'SConscript') for i in subdirs], exports = ['env'])
