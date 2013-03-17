@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996-2000 University of Utah and the Flux Group.
+ * Copyright (c) 1997-1999 University of Utah and the Flux Group.
  * All rights reserved.
  * 
  * This file is part of the Flux OSKit.  The OSKit is free software, also known
@@ -15,46 +15,23 @@
  * not, write to the FSF, 59 Temple Place #330, Boston, MA 02111-1307, USA.
  */
 
-#include <oskit/x86/proc_reg.h>
-#include <oskit/x86/eflags.h>
-#include <oskit/x86/pc/pic.h>
-
 /*
- * Enable/disable interrupts.
+ * start_network.c
+ *
+ * start up only the first available network interface on this machine.
  */
+#include <oskit/startup.h>
+
+#ifdef	PTHREADS
+#include <oskit/threads/pthread.h>
+
+#define start_network	start_network_pthreads
+#define start_conf_network	start_conf_network_pthreads
+#endif
+
 void
-osenv_intr_enable(void)
+start_network(void)
 {
-	sti();
-}
-
-void
-osenv_intr_disable(void)
-{
-	cli();
-}
-
-/*
- * Return the current interrupt enable flag.
- */
-int
-osenv_intr_enabled(void)
-{
-	return get_eflags() & EFL_IF;
-}
-
-/*
- * Disable interrupts returning the old value.  Combo of:
- *	save = osenv_intr_enabled();
- *	osenv_intr_disable();
- */
-int
-osenv_intr_save_disable(void)
-{
-	int enabled;
-
-	if ((enabled = get_eflags() & EFL_IF) != 0)
-		cli();
-
-	return enabled;
+	/* Start only 1 interface on this network. */
+	start_conf_network(1); 
 }

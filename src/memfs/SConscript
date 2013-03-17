@@ -1,0 +1,9 @@
+import os.path
+Import(['env'])
+
+files = Glob('*.c')
+
+env.memfs_objects = files
+
+env.oskit_memfs = env.StaticLibrary('oskit_memfs', env.memfs_objects)
+env.Command('#lib/${SOURCE}', env.oskit_memfs, Copy("$TARGET", "$SOURCE"))

@@ -5,7 +5,7 @@ oldenv = env
 env = env.Clone()
 
 #files = Glob('*.c')
-files = ['lua.c']
+files = ['main.c', 'util.c']
 subdirs = []
 
 env.Append(CPPPATH = ['#/lua/src'])
@@ -29,9 +29,11 @@ hello = env.Program('hello',
   'oskit_lua',
   'oskit_diskpart',
   'oskit_memdebug',
+  'oskit_memfs',
+  'oskit_startup',
   'oskit_fsnamespace',
-  'oskit_linux_dev',
-  'oskit_linux_fs'
+#  'oskit_linux_dev',
+#  'oskit_linux_fs'
 	],
  LINKFLAGS = env['LINKFLAGS'] + ' -T'+os.path.join(Dir('..').srcnode().path, 'src/link.ld'),
 # LINKCOM = '$LINK -o $TARGET $LINKFLAGS $SOURCES $_LIBDIRFLAGS $_LIBFLAGS'
@@ -46,10 +48,12 @@ Depends(hello, '#lib/liboskit_com.a')
 Depends(hello, '#lib/liboskit_posix.a')
 Depends(hello, '#lib/liboskit_diskpart.a')
 Depends(hello, '#lib/liboskit_memdebug.a')
+Depends(hello, '#lib/liboskit_memfs.a')
 Depends(hello, '#lib/liboskit_dev.a')
+Depends(hello, '#lib/liboskit_startup.a')
 Depends(hello, '#lib/liboskit_fsnamespace.a')
-Depends(hello, '#lib/liboskit_linux_dev.a')
-Depends(hello, '#lib/liboskit_linux_fs.a')
+#Depends(hello, '#lib/liboskit_linux_dev.a')
+#Depends(hello, '#lib/liboskit_linux_fs.a')
 Depends(hello, '#lib/liboskit_lua.a')
 
 env.Command('#/kernel', hello, Copy("$TARGET", "$SOURCE"))

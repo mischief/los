@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996-2000 University of Utah and the Flux Group.
+ * Copyright (c) 1997-1999 University of Utah and the Flux Group.
  * All rights reserved.
  * 
  * This file is part of the Flux OSKit.  The OSKit is free software, also known
@@ -15,46 +15,28 @@
  * not, write to the FSF, 59 Temple Place #330, Boston, MA 02111-1307, USA.
  */
 
-#include <oskit/x86/proc_reg.h>
-#include <oskit/x86/eflags.h>
-#include <oskit/x86/pc/pic.h>
-
 /*
- * Enable/disable interrupts.
+ * start_network.c
+ *
+ * start up native socket interface.
  */
+#include <oskit/dev/error.h>
+#include <oskit/net/socket.h>
+#include <oskit/threads/pthread.h>
+
+#include <oskit/c/stdio.h>
+#include <oskit/c/string.h>
+#include <oskit/c/assert.h>
+
+oskit_error_t oskit_native_net_init(oskit_socket_factory_t **f);
+
 void
-osenv_intr_enable(void)
+start_network_native_pthreads(void)
 {
-	sti();
-}
-
-void
-osenv_intr_disable(void)
-{
-	cli();
-}
-
-/*
- * Return the current interrupt enable flag.
- */
-int
-osenv_intr_enabled(void)
-{
-	return get_eflags() & EFL_IF;
-}
-
-/*
- * Disable interrupts returning the old value.  Combo of:
- *	save = osenv_intr_enabled();
- *	osenv_intr_disable();
- */
-int
-osenv_intr_save_disable(void)
-{
-	int enabled;
-
-	if ((enabled = get_eflags() & EFL_IF) != 0)
-		cli();
-
-	return enabled;
+	oskit_socket_factory_t *fsc;
+	int   err;
+ 
+	err = oskit_native_net_init(&fsc);
+	assert(!err);
+	pthread_init_socketfactory(fsc);
 }

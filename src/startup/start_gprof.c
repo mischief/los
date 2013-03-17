@@ -15,46 +15,57 @@
  * not, write to the FSF, 59 Temple Place #330, Boston, MA 02111-1307, USA.
  */
 
-#include <oskit/x86/proc_reg.h>
-#include <oskit/x86/eflags.h>
-#include <oskit/x86/pc/pic.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <oskit/startup.h>
+
+#ifdef GPROF
+/*
+ * These are defined in the C libraries.
+ */
+void _mcleanup();
+void monstartup(unsigned long lowpc, unsigned long highpc);
+void moncontrol(int mode);
 
 /*
- * Enable/disable interrupts.
+ * This is the hook into gprof executable's main.
+ * Defined in the gprof library.
+ */
+void gprof_atexit();
+
+/*
+ * Special symbols.
+ */
+extern unsigned long _start;
+extern unsigned long end;
+extern unsigned long etext;
+
+void
+start_gprof(void)
+{
+	extern int enable_gprof; /* XXX Kern library */
+
+	if (! enable_gprof) {
+		printf("start_gprof: GPROF is not enabled in kern library!");
+		return;
+	}
+	
+	startup_atexit(gprof_atexit, NULL);
+	startup_atexit(_mcleanup, NULL);
+	monstartup((unsigned long)&_start, (unsigned long)&etext);
+}
+
+void
+pause_gprof(int onoff)
+{
+	moncontrol(onoff);
+}
+
+/*
+ * Override this to prevent it from happening out of multiboot_main.
  */
 void
-osenv_intr_enable(void)
+base_gprof_init()
 {
-	sti();
 }
-
-void
-osenv_intr_disable(void)
-{
-	cli();
-}
-
-/*
- * Return the current interrupt enable flag.
- */
-int
-osenv_intr_enabled(void)
-{
-	return get_eflags() & EFL_IF;
-}
-
-/*
- * Disable interrupts returning the old value.  Combo of:
- *	save = osenv_intr_enabled();
- *	osenv_intr_disable();
- */
-int
-osenv_intr_save_disable(void)
-{
-	int enabled;
-
-	if ((enabled = get_eflags() & EFL_IF) != 0)
-		cli();
-
-	return enabled;
-}
+#endif

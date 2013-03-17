@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996-2000 University of Utah and the Flux Group.
+ * Copyright (c) 1997-1999, 2001 University of Utah and the Flux Group.
  * All rights reserved.
  * 
  * This file is part of the Flux OSKit.  The OSKit is free software, also known
@@ -15,46 +15,30 @@
  * not, write to the FSF, 59 Temple Place #330, Boston, MA 02111-1307, USA.
  */
 
-#include <oskit/x86/proc_reg.h>
-#include <oskit/x86/eflags.h>
-#include <oskit/x86/pc/pic.h>
-
 /*
- * Enable/disable interrupts.
+ * start_conf_network_eifconfig.c
  */
-void
-osenv_intr_enable(void)
-{
-	sti();
-}
-
-void
-osenv_intr_disable(void)
-{
-	cli();
-}
+#include <oskit/net/freebsd.h>
+#include <oskit/startup.h>
+#include <assert.h>
 
 /*
- * Return the current interrupt enable flag.
+ * XXX the type is probably wrong for the first parameter.
  */
 int
-osenv_intr_enabled(void)
+start_conf_network_eifconfig(oskit_freebsd_net_ether_if_t *eif,
+			     const char *eif_name,
+			     const char *eif_addr,
+			     const char *eif_mask)
 {
-	return get_eflags() & EFL_IF;
+	assert(eif);
+	assert(eif_name);
+	assert(strlen(eif_name) > 0);
+
+	return oskit_freebsd_net_ifconfig(eif,
+					  (char *)eif_name,
+					  (char *)eif_addr,
+					  (char *)eif_mask);
 }
 
-/*
- * Disable interrupts returning the old value.  Combo of:
- *	save = osenv_intr_enabled();
- *	osenv_intr_disable();
- */
-int
-osenv_intr_save_disable(void)
-{
-	int enabled;
 
-	if ((enabled = get_eflags() & EFL_IF) != 0)
-		cli();
-
-	return enabled;
-}

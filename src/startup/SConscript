@@ -1,0 +1,13 @@
+import os.path
+Import(['env'])
+
+files = Glob('*.c')
+subdirs = []
+
+env.startup_objects = [ files ]
+
+SConscript([os.path.join(i, 'SConscript') for i in subdirs], exports = ['env'])
+
+env.oskit_startup = env.StaticLibrary('oskit_startup', env.startup_objects)
+
+env.Command('#lib/${SOURCE}', env.oskit_startup, Copy("$TARGET", "$SOURCE"))

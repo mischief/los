@@ -55,7 +55,7 @@ def buildlink(env, name, target):
   """Links target to name"""
   import shlex, subprocess
   command = 'ln -f -n -s %s %s' % (target, name)
-  print command
+#  print command
   subprocess.Popen(shlex.split(command))
   return None
 

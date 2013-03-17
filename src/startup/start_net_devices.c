@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1996-2000 University of Utah and the Flux Group.
+ * Copyright (c) 1997-2000 University of Utah and the Flux Group.
  * All rights reserved.
  * 
  * This file is part of the Flux OSKit.  The OSKit is free software, also known
@@ -15,46 +15,42 @@
  * not, write to the FSF, 59 Temple Place #330, Boston, MA 02111-1307, USA.
  */
 
-#include <oskit/x86/proc_reg.h>
-#include <oskit/x86/eflags.h>
-#include <oskit/x86/pc/pic.h>
-
 /*
- * Enable/disable interrupts.
+ * start_net_devices.c
+ *
+ * start up the network devices.
  */
-void
-osenv_intr_enable(void)
-{
-	sti();
-}
+#include <oskit/startup.h>
+#include <oskit/dev/linux.h>
 
 void
-osenv_intr_disable(void)
+start_net_devices(void)
 {
-	cli();
+	start_devices();
 }
 
 /*
- * Return the current interrupt enable flag.
+ * Having this initialization here makes `start_devices' (start_devices.c)
+ * initialize and probe the net drivers, since linking in this file
+ * means the program is using the network.
  */
-int
-osenv_intr_enabled(void)
-{
-	return get_eflags() & EFL_IF;
-}
 
+#ifdef HAVE_CONSTRUCTOR
 /*
- * Disable interrupts returning the old value.  Combo of:
- *	save = osenv_intr_enabled();
- *	osenv_intr_disable();
+ * Place initilization in the init section to be called at startup
  */
-int
-osenv_intr_save_disable(void)
+static void initme(void) __attribute__ ((constructor));
+
+static void
+initme(void)
 {
-	int enabled;
+	extern void (*_init_devices_net)(void);
 
-	if ((enabled = get_eflags() & EFL_IF) != 0)
-		cli();
-
-	return enabled;
+	_init_devices_net = oskit_linux_init_net;
 }
+#else
+/*
+ * Use a (dreaded) common symbol
+ */
+void (*_init_devices_net)(void) = oskit_linux_init_net;
+#endif

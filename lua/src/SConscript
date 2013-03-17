@@ -4,7 +4,8 @@ Import(['env'])
 files = [ 'lapi.c', 'lauxlib.c', 'lbaselib.c', 'lcode.c', 'ldebug.c', 'ldo.c',
   'ldump.c', 'lfunc.c', 'lgc.c', 'linit.c', 'llex.c', 'lmem.c', 'lobject.c',
   'lopcodes.c', 'lparser.c', 'lstate.c', 'lctype.c', 'lstring.c', 'lstrlib.c', 'liolib.c',
-  'ltable.c', 'ltablib.c', 'ltm.c', 'lundump.c', 'lvm.c', 'lzio.c',   ]
+  'ltable.c', 'ltablib.c', 'ltm.c', 'lundump.c', 'lvm.c', 'lzio.c',  'loslib.c',
+  'lcorolib.c', 'lbitlib.c', 'loadlib.c', 'ldblib.c' ]
 
 env.lua_objects = []
 

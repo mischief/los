@@ -10,7 +10,11 @@ subdirs = [
 'diskpart',
 'fsnamespace',
 'memdebug',
-'linux'
+'memfs',
+'startup',
+#'linux'
+#'netbsd',
+#'freebsd',
 ]
 
 Mkdir("#lib")
