@@ -8,8 +8,10 @@ A mix of OSKit and Lua.
 * scons
 * qemu
 
-    # for ubuntu
-    $ sudo apt-get install scons
+### ubuntu
+    
+    $ sudo apt-get install scons # https://launchpad.net/ubuntu/+source/scons
+    $ sudo apt-get install qemu # https://help.ubuntu.com/community/Installation/QemuEmulator
     
 ## Setup
 
