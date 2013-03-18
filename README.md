@@ -84,6 +84,8 @@ in userspace without calling mount (which requires root)
     Copying kernels...
     Unmounting floppy...
 
+## Go!
+
 Run qemu to emulate and run the image
 
     qemu-system-i386 -fda ./los.img
